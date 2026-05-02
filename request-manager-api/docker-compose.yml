@@ -1,0 +1,9 @@
+services:
+  request-manager-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "2000:8000"
+
