@@ -1,9 +1,10 @@
 services:
-  request-manager-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-
+  db:
+    image: mysql
+    environment:
+      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_PASSWORD=password'
+      - 'MYSQL_ROOT_PASSWORD=rootpassword'
+      - 'MYSQL_USER=manager'
     ports:
-      - "2000:8000"
-
+      - '3306:3306'
