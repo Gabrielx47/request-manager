@@ -27,7 +27,7 @@ public class SolicitacaoController {
     @GetMapping
     ResponseEntity<List<SolicitacaoListagemDTO>> obterListagemDeSolicitacoes(@RequestParam int numeroDaPagina, 
         @RequestParam int numeroDeElementosPorPagina) {
-        List<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.encontrarTodosOsDadosDaSolicitacao(PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
+        List<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.listarParteDasSolicitacoes(PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
         System.out.println(solicitacoes);
         return ResponseEntity.ok(solicitacoes);
     }

@@ -16,8 +16,8 @@ public class SolicitacaoService {
         this.solicitacaoRepository = solicitacaoRepository;
     }
 
-    public List<SolicitacaoListagemDTO> encontrarTodosOsDadosDaSolicitacao(Pageable pageable) {
-        return solicitacaoRepository.selecionarTodosDadosDaSolicitacaoPorId(pageable).getContent();
+    public List<SolicitacaoListagemDTO> listarParteDasSolicitacoes(Pageable pageable) {
+        return solicitacaoRepository.selecionarParteDasSolicitacoes(pageable).getContent();
     }
 
     public SolicitacaoCompletaDTO encontrarTodosOsDadosDaSolicitacao(Long id) {

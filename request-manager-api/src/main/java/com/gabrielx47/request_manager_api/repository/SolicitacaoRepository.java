@@ -16,7 +16,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
                         "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                         "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id",
             nativeQuery = true)
-    Page<SolicitacaoListagemDTO> selecionarTodosDadosDaSolicitacaoPorId(Pageable pageable);
+    Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoes(Pageable pageable);
 
     @NativeQuery(value = "SELECT s.descricao, s.valor, s.data_solicitacao, s.status, c.nome AS nomeDaCategoria, l.nome AS nomeDoSolicitante, l.cpf_cnpj " +
                         "FROM tb_solicitacao AS s " +
