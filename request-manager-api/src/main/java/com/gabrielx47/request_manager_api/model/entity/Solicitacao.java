@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
 @Table(name = "tb_solicitacao")
 public class Solicitacao {
     @Id
@@ -16,7 +17,7 @@ public class Solicitacao {
     private String descricao;
     @Column(name = "valor", scale = 2 ,nullable = false)
     private BigDecimal valor;
-    @Column(name = "dataSolicitacao", nullable = false)
+    @Column(name = "data_solicitacao", nullable = false)
     private LocalDate dataSolicitacao;
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

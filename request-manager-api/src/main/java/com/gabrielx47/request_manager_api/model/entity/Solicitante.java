@@ -15,7 +15,7 @@ public class Solicitante {
     private Long id;
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
-    @Column(name = "cpfCnpj", length = 14, unique = true, nullable = false)
+    @Column(name = "cpf_cnpj", length = 14, unique = true, nullable = false)
     private String cpfCnpj;
     @OneToMany(mappedBy = "solicitante")
     private List<Solicitacao> solicitacoes;
