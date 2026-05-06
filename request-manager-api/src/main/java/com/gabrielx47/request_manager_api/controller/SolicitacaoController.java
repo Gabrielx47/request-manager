@@ -1,5 +1,6 @@
 package com.gabrielx47.request_manager_api.controller;
 
+import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.service.SolicitacaoService;
 
@@ -29,5 +30,11 @@ public class SolicitacaoController {
         List<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.encontrarTodosOsDadosDaSolicitacao(PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
         System.out.println(solicitacoes);
         return ResponseEntity.ok(solicitacoes);
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity<SolicitacaoCompletaDTO> obterTodosDadosDeUmaSolicitacao(@PathVariable Long id) {
+        SolicitacaoCompletaDTO solicitacao = solicitacaoService.encontrarTodosOsDadosDaSolicitacao(id);
+        return ResponseEntity.ok(solicitacao);
     }
 }

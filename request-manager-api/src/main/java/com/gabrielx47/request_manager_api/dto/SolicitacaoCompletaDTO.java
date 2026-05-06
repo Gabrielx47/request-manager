@@ -1,6 +1,5 @@
 package com.gabrielx47.request_manager_api.dto;
 
-import com.gabrielx47.request_manager_api.model.entity.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,13 +8,26 @@ public class SolicitacaoCompletaDTO {
     private String descricao;
     private BigDecimal valor;
     private LocalDate dataSolicitacao;
-    private Status status;
+    private String status;
     private String nomeDaCategoria;
     private String nomeDoSolicitante;
     private String cpfCnpj;
 
     public SolicitacaoCompletaDTO() {
     }
+
+    public SolicitacaoCompletaDTO(String descricao, BigDecimal valor, LocalDate dataSolicitacao, String status,
+            String nomeDaCategoria, String nomeDoSolicitante, String cpfCnpj) {
+        this.descricao = descricao;
+        this.valor = valor;
+        this.dataSolicitacao = dataSolicitacao;
+        this.status = status;
+        this.nomeDaCategoria = nomeDaCategoria;
+        this.nomeDoSolicitante = nomeDoSolicitante;
+        this.cpfCnpj = cpfCnpj;
+    }
+
+
 
     public String getDescricao() {
         return descricao;
@@ -41,11 +53,11 @@ public class SolicitacaoCompletaDTO {
         this.dataSolicitacao = dataSolicitacao;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -55,6 +67,14 @@ public class SolicitacaoCompletaDTO {
 
     public void setNomeDaCategoria(String nomeDaCategoria) {
         this.nomeDaCategoria = nomeDaCategoria;
+    }
+
+    public String getNomeDoSolicitante() {
+        return nomeDoSolicitante;
+    }
+
+    public void setNomeDoSolicitante(String nomeDoSolicitante) {
+        this.nomeDoSolicitante = nomeDoSolicitante;
     }
 
     public String getCpfCnpj() {

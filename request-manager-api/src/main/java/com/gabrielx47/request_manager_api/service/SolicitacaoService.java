@@ -1,5 +1,6 @@
 package com.gabrielx47.request_manager_api.service;
 
+import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,9 @@ public class SolicitacaoService {
 
     public List<SolicitacaoListagemDTO> encontrarTodosOsDadosDaSolicitacao(Pageable pageable) {
         return solicitacaoRepository.selecionarTodosDadosDaSolicitacaoPorId(pageable).getContent();
+    }
+
+    public SolicitacaoCompletaDTO encontrarTodosOsDadosDaSolicitacao(Long id) {
+        return solicitacaoRepository.selecionarTodosDadosDaSolicitacaoPorId(id);
     }
 }
