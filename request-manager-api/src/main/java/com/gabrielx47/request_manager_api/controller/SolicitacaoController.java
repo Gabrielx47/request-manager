@@ -6,6 +6,7 @@ import com.gabrielx47.request_manager_api.service.SolicitacaoService;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -25,9 +27,14 @@ public class SolicitacaoController {
     }
 
     @GetMapping
-    ResponseEntity<List<SolicitacaoListagemDTO>> obterListagemDeSolicitacoes(@RequestParam int numeroDaPagina, 
-        @RequestParam int numeroDeElementosPorPagina) {
-        List<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.listarParteDasSolicitacoes(PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
+    ResponseEntity<List<SolicitacaoListagemDTO>> obterListagemDeSolicitacoes(
+            @RequestParam(required = false) String status, 
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio, 
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal, 
+            @RequestParam(required = false) String categoria, @RequestParam(defaultValue = "0") int numeroDaPagina, 
+        @RequestParam(defaultValue = "10") int numeroDeElementosPorPagina) {
+        
+        List<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.listarParteDasSolicitacoes(status, dataInicio, dataFinal, categoria, PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
         System.out.println(solicitacoes);
         return ResponseEntity.ok(solicitacoes);
     }
