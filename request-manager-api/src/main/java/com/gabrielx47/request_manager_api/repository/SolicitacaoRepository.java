@@ -4,11 +4,14 @@ import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
 
+import jakarta.transaction.Transactional;
+
 import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 
@@ -80,4 +83,9 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
                         "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
                         "WHERE s.id = :id")
     SolicitacaoCompletaDTO selecionarTodosDadosDaSolicitacaoPorId(Long id);
+
+    @Modifying
+    @Transactional
+    @NativeQuery(value = "UPDATE tb_solicitacao SET status = :status WHERE id = :id")
+    void atualizarStatusDaSolicitacao(Long id, String status);
 }

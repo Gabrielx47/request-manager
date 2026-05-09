@@ -42,4 +42,9 @@ public class SolicitacaoService {
     public SolicitacaoCompletaDTO encontrarTodosOsDadosDaSolicitacao(Long id) {
         return solicitacaoRepository.selecionarTodosDadosDaSolicitacaoPorId(id);
     }
+
+    public String atualizarStatusDaSolicitacao(Long id, String status) {
+        solicitacaoRepository.atualizarStatusDaSolicitacao(id, status);
+        return "Status da solicitcação atualizado com sucesso";
+    }
 }
