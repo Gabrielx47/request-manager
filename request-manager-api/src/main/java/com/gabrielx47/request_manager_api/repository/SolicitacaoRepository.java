@@ -7,6 +7,7 @@ import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -82,7 +83,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
                         "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                         "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
                         "WHERE s.id = :id")
-    SolicitacaoCompletaDTO selecionarTodosDadosDaSolicitacaoPorId(Long id);
+    Optional<SolicitacaoCompletaDTO> selecionarTodosDadosDaSolicitacaoPorId(Long id);
 
     @Modifying
     @Transactional
