@@ -4,6 +4,7 @@ package com.gabrielx47.request_manager_api.dto;
 import java.math.BigDecimal;
 
 public class SolicitacaoListagemDTO {
+    private Long id;
     private String nomeDoSolicitante;
     private String cpfCnpj;
     private String nomeDaCategoria;
@@ -15,8 +16,9 @@ public class SolicitacaoListagemDTO {
 
     
 
-    public SolicitacaoListagemDTO(String nomeDoSolicitante, String cpfCnpj, String nomeDaCategoria, String status,
+    public SolicitacaoListagemDTO(Long id, String nomeDoSolicitante, String cpfCnpj, String nomeDaCategoria, String status,
             BigDecimal valor) {
+        this.id = id;
         this.nomeDoSolicitante = nomeDoSolicitante;
         this.cpfCnpj = cpfCnpj;
         this.nomeDaCategoria = nomeDaCategoria;
@@ -24,7 +26,13 @@ public class SolicitacaoListagemDTO {
         this.valor = valor;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNomeDoSolicitante() {
         return nomeDoSolicitante;

@@ -17,14 +17,14 @@ import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                         "FROM tb_solicitacao AS s " +
                         "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                         "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id ",
             nativeQuery = true)
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesSemFiltro(Pageable pageable);
 
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
             "FROM tb_solicitacao AS s " +
             "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
             "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
@@ -32,7 +32,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
             nativeQuery = true)
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(String status, LocalDate dataInicio, LocalDate dataFim, String categoria , Pageable pageable);
 
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                     "FROM tb_solicitacao AS s " +
                     "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                     "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
@@ -40,7 +40,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesComFiltrosStatusPeriodo(String status,
                     LocalDate dataInicio, LocalDate dataFim, Pageable pageable);
 
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                     "FROM tb_solicitacao AS s " +
                     "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                     "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
@@ -48,7 +48,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesComFiltrosStatusCategoria(String status,
                     String categoria, Pageable pageable);
 
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                     "FROM tb_solicitacao AS s " +
                     "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                     "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
@@ -56,7 +56,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesComFiltrosCategoriaPeriodo(String categoria,
                     LocalDate dataInicio, LocalDate dataFim, Pageable pageable);
     
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                     "FROM tb_solicitacao AS s " +
                     "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                     "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
@@ -64,14 +64,14 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesComFiltroStatus(String status,
                     Pageable pageable);                    
     
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                     "FROM tb_solicitacao AS s " +
                     "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                     "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
                     "WHERE s.data_solicitacao BETWEEN :dataInicio AND :dataFim", nativeQuery = true)
     Page<SolicitacaoListagemDTO> selecionarParteDasSolicitacoesComFiltroPeriodo(LocalDate dataInicio, LocalDate dataFim, Pageable pageable);
    
-    @Query(value = "SELECT l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
+    @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
                     "FROM tb_solicitacao AS s " +
                     "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                     "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
