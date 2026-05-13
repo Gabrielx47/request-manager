@@ -1,8 +1,11 @@
 package com.gabrielx47.request_manager_api.service;
 
 import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
+import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
+import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
+import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +14,7 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class SolicitacaoService {
@@ -51,7 +55,35 @@ public class SolicitacaoService {
     }
 
     public String atualizarStatusDaSolicitacao(Long id, String status) {
+        SolicitacaoDTO solicitacao = solicitacaoRepository.encontrarSolicitacaoPorId(id)
+        .orElseThrow(() -> new RecursoNaoEncontradoException("Solicitação não encontrada"));
+
+        String statusAtual = solicitacao.getStatus();
+
+        if (!transicaoDeStatusEValida(statusAtual, status)) {
+            throw new TransicaoDeStatusDaInvalidaException("Transição de status " + statusAtual + " para " + status + " é inválida");
+        }
+
         solicitacaoRepository.atualizarStatusDaSolicitacao(id, status);
-        return "Status da solicitcação atualizado com sucesso";
+        return "Status da solicitação atualizado com sucesso";
+    }
+
+    private boolean transicaoDeStatusEValida(String statusAtual, String novoStatus) {
+        if (statusAtual.equals("SOLICITADO") && (novoStatus.equals("LIBERADO") || novoStatus.equals("REJEITADO"))) {
+            System.out.println("(SOLICITADO) Transição de status válida: " + statusAtual + " para " + novoStatus);
+            return true; 
+        } else if (statusAtual.equals("LIBERADO") && (novoStatus.equals("REJEITADO") || novoStatus.equals("APROVADO"))) {
+            System.out.println("(LIBERADO) Transição de status válida: " + statusAtual + " para " + novoStatus);
+            return true;
+        } else if (statusAtual.equals("APROVADO") && novoStatus.equals("CANCELADO")) {
+            System.out.println("(APROVADO) Transição de status válida: " + statusAtual + " para " + novoStatus);
+            return true;
+        } else if (statusAtual.equals("REJEITADO") && statusAtual.equals("CANCELADO")) {
+            return false;
+        } else{
+            // Transição de status para o mesmo status ou transição inválida
+            return false;
+        }
+        
     }
 }
