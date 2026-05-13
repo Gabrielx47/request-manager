@@ -18,6 +18,12 @@ public class ManipuladorDeExcecoesController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
+    @ExceptionHandler(TransicaoDeStatusDaInvalidaException.class)
+    public ResponseEntity<ProblemDetail> tratarTransicaoDeStatusDaInvalidaException(TransicaoDeStatusDaInvalidaException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> tratarDadosInvalidosException(MethodArgumentNotValidException e) {
         Map<String, String> erros = e.getBindingResult().getFieldErrors().stream()
