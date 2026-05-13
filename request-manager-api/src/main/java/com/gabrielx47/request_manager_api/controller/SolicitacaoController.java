@@ -7,8 +7,10 @@ import com.gabrielx47.request_manager_api.service.SolicitacaoService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,14 +38,15 @@ public class SolicitacaoController {
     }
 
     @GetMapping
-    ResponseEntity<List<SolicitacaoListagemDTO>> obterListagemDeSolicitacoes(
+    ResponseEntity<PagedModel<SolicitacaoListagemDTO>> obterListagemDeSolicitacoes(
             @RequestParam(required = false) String status, 
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio, 
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal, 
             @RequestParam(required = false) String categoria, @RequestParam(defaultValue = "0") int numeroDaPagina, 
         @RequestParam(defaultValue = "10") int numeroDeElementosPorPagina) {
         
-        List<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.listarParteDasSolicitacoes(status, dataInicio, dataFinal, categoria, PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
+        PagedModel<SolicitacaoListagemDTO> solicitacoes = solicitacaoService.listarParteDasSolicitacoes(status, dataInicio, dataFinal, categoria, PageRequest.of(numeroDaPagina, numeroDeElementosPorPagina));
+
         System.out.println(solicitacoes);
         return ResponseEntity.ok(solicitacoes);
     }

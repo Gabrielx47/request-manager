@@ -4,11 +4,13 @@ import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class SolicitacaoService {
@@ -18,26 +20,29 @@ public class SolicitacaoService {
         this.solicitacaoRepository = solicitacaoRepository;
     }
 
-    public List<SolicitacaoListagemDTO> listarParteDasSolicitacoes(String status, LocalDate dataInicio, LocalDate dataFim, String categoria, Pageable pageable) {
+    public PagedModel<SolicitacaoListagemDTO> listarParteDasSolicitacoes(String status, LocalDate dataInicio, LocalDate dataFim, String categoria, Pageable pageable) {
+        Page<SolicitacaoListagemDTO> solicitacoes;
         if(status == null && dataInicio == null && dataFim == null && categoria == null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesSemFiltro(pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesSemFiltro(pageable);
         } else if (status != null && categoria != null && dataInicio != null && dataFim != null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(status, dataInicio, dataFim, categoria, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(status, dataInicio, dataFim, categoria, pageable);
         } else if (status != null && dataInicio != null && dataFim != null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodo(status, dataInicio, dataFim, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodo(status, dataInicio, dataFim, pageable);
         } else if (status != null && categoria != null) { 
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusCategoria(status, categoria, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusCategoria(status, categoria, pageable);
         } else if (categoria != null && dataInicio != null && dataFim != null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosCategoriaPeriodo(categoria, dataInicio, dataFim, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosCategoriaPeriodo(categoria, dataInicio, dataFim, pageable);
         } else if (status != null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroStatus(status, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroStatus(status, pageable);
         } else if (dataInicio != null && dataFim != null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroPeriodo(dataInicio, dataFim, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroPeriodo(dataInicio, dataFim, pageable);
         } else if (categoria != null) {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroCategoria(categoria, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroCategoria(categoria, pageable);
         } else {
-            return solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(status, dataInicio, dataFim, categoria, pageable).getContent();
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(status, dataInicio, dataFim, categoria, pageable);
         }
+
+        return new PagedModel<SolicitacaoListagemDTO>(solicitacoes);
     }
 
     public SolicitacaoCompletaDTO encontrarTodosOsDadosDaSolicitacao(Long id) {
