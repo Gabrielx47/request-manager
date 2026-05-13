@@ -1,47 +1,125 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { reactive, ref, onMounted } from 'vue';
+import { DataTable, Column, Select, Menubar, Message} from 'primevue';
+import 'primeicons/primeicons.css';
+import axios from 'axios';
+
+const loading = ref(false);
+const message = ref('');
+const messageSeverity = ref('');
+const isMessageVisible = ref(false);
+const numeroDapagina = ref(0);
+const numeroDeRegistros = ref(2);
+const baseUrl = "http://localhost:5000" 
+
+interface Solicitacao {
+  id: number;
+  nomeDoSolicitante: string;
+  cpfCnpj: string;
+  nomeDaCategoria: string;
+  status: string;
+  valor: number;
+}
+
+let solicitacoes = reactive<Solicitacao[]>([]);
+const totalRecords = ref(0);
+
+function onPage(event: any) {
+  const { page, rows } = event;
+  console.log(`Page: ${page}, Rows: ${rows}`);
+  numeroDapagina.value = page;
+  numeroDeRegistros.value = rows;
+  buscarDadosDaSolicitacao(numeroDapagina.value, numeroDeRegistros.value);
+}
+
+async function  buscarDadosDaSolicitacao(numeroDapagina: number, numeroDeRegistros: number) {
+  console.log(`Buscando dados para página ${numeroDapagina} com ${numeroDeRegistros} registros por página.`);
+  loading.value = true;
+  const url = `${baseUrl}/solicitacoes?numeroDaPagina=${numeroDapagina}&numeroDeElementosPorPagina=${numeroDeRegistros}`;
+
+  try{
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log('Dados recebidos:', data);
+    solicitacoes.splice(0, solicitacoes.length, ...data.content);
+    totalRecords.value = data.page.totalElements; 
+  } catch (error) {
+    console.error('Erro ao buscar dados:', error);
+    
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function carregarPrimeiraPagina() {
+  loading.value = true;
+  try {
+    const response = await fetch(`${baseUrl}/solicitacoes?numeroDaPagina=0&numeroDeElementosPorPagina=2`);
+    const data = await response.json();
+    (data.content as Solicitacao[]).forEach((item: Solicitacao) => {
+      console.log('Item recebido:', item);
+    });
+    solicitacoes.splice(0, solicitacoes.length, ...data.content);
+    totalRecords.value = data.page.totalElements;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
+    console.log(`Atualizando status da solicitação ${id} para ${novoStatus}`);
+    console.log("isMessageVisible antes da atualização:", isMessageVisible.value);
+    
+    await axios.patch(`${baseUrl}/solicitacoes/${id}`, { status: novoStatus }).then(response => {
+      console.log('Resposta da atualização de status:', response.data);
+      message.value = response.data;
+      messageSeverity.value = 'success';
+      isMessageVisible.value = true;
+    }).catch(error => {
+      console.error('Erro ao atualizar status:', error);
+      message.value = error.response?.data?.detail || 'Erro ao atualizar status';
+      messageSeverity.value = 'error';
+      isMessageVisible.value = true;
+    });
+
+    buscarDadosDaSolicitacao(numeroDapagina.value, numeroDeRegistros.value);
+}
+
+onMounted(() => {
+    carregarPrimeiraPagina();
+  });
+
 </script>
 
+
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <Menubar :model="[{label : 'Solicitações', icon : 'pi pi-home'}]" ></Menubar>
+  
+  <div id="message">
+    <Message v-if="isMessageVisible" :severity="messageSeverity" closable @close="() => isMessageVisible = false">
+      {{ message }}
+    </Message>
+  </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <DataTable :value="solicitacoes"  paginator :rows="2" :totalRecords="totalRecords"  :lazy="true" @page="onPage($event)" >
+    <Column field="nomeDoSolicitante" header="Nome"></Column>
+    <Column field="cpfCnpj" header="CPF/CNPJ"></Column>
+    <Column field="nomeDaCategoria" header="Categoria"></Column>  
+    <Column field="status" header="Status">
+      <template #body="{data}">
+        <Select :options="['SOLICITADO', 'LIBERADO', 'APROVADO', 'REJEITADO', 'CANCELADO']" v-model="data.status" @change="atualizarStatusDaSolicitacao(data.id, data.status)" />
+      </template>
+    </Column>
+    <Column field="valor" header="Valor"></Column>
+  </DataTable>
+  
 </template>
 
+
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+#message {
+  margin: 20px auto;
 }
 </style>
