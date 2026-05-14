@@ -3,6 +3,7 @@ import { reactive, ref, onMounted } from 'vue';
 import { DataTable, Column, Select, Dialog, Message} from 'primevue';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
+import type { Solicitacao, SolicitacaoCompleta } from '../types/solicitacao';
 
 const loading = ref(false);
 const message = ref('');
@@ -12,33 +13,13 @@ const numeroDapagina = ref(0);
 const numeroDeRegistros = ref(2);
 const baseUrl = "http://localhost:5000" 
 
-interface Solicitacao {
-  id: number;
-  nomeDoSolicitante: string;
-  cpfCnpj: string;
-  nomeDaCategoria: string;
-  status: string;
-  valor: number;
-}
-
 let solicitacoes = reactive<Solicitacao[]>([]);
 const totalRecords = ref(0);
-
-interface SolicitacaoCompleta {
-   descricao: string;
-    valor: number;
-    dataSolicitacao: Date;
-    status: string;
-    nomeDaCategoria: string;
-    nomeDoSolicitante: string;
-    cpfCnpj: string;
-}
 
 const solicitacaoCompleta = ref<SolicitacaoCompleta>();
 const isVisibleDialog = ref(false);
 
 async function buscarTodosOsDadosDaSolicitacao(id: number) {
-  // Simulação de busca de dados da solicitação
   axios.get(`${baseUrl}/solicitacoes/${id}`)
     .then(response => {
       const dados = response.data;
