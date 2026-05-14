@@ -6,6 +6,7 @@ import Aura from '@primeuix/themes/aura'
 import Lara from '@primeuix/themes/lara'
 import Material from '@primeuix/themes/material'
 import Nora from '@primeuix/themes/nora'
+import { router } from './router'
 import App from './App.vue'
 
 
@@ -18,4 +19,4 @@ app.use(PrimeVue, {
         }
     }
 });
-app.mount('#app')
+app.use(router).mount('#app');
