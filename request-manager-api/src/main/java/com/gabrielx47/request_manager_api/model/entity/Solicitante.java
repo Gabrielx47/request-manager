@@ -2,7 +2,6 @@ package com.gabrielx47.request_manager_api.model.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
