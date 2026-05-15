@@ -161,7 +161,7 @@ onMounted(() => {
       </template>
     </Column>
     <Column #body="{data}">
-      <button  @click="buscarTodosOsDadosDaSolicitacao(data.id)">Ver Detalhes</button>
+      <Button  label="Detalhes" class="p-button-info" icon="pi pi-info-circle" iconPos="right" @click="buscarTodosOsDadosDaSolicitacao(data.id)"/>
     </Column>  
   </DataTable>
 
