@@ -1,5 +1,7 @@
 package com.gabrielx47.request_manager_api.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.gabrielx47.request_manager_api.repository.CategoriaRepository;
@@ -17,4 +19,7 @@ public class CategoriaService {
         return "Categoria criada com sucesso";
     }
 
+    public List<String> encontrarOsNomesDasCategorias() {
+        return categoriaRepository.selecionarTodosOsNomesDasCategorias();
+    }
 }

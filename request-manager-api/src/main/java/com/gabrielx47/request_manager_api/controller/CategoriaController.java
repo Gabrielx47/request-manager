@@ -8,10 +8,15 @@ import com.gabrielx47.request_manager_api.service.CategoriaService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -28,5 +33,11 @@ public class CategoriaController {
     public ResponseEntity<String> criarUmaNovaCategoria(@Valid @RequestBody NovaCategoriaDTO nome) {
         return ResponseEntity.ok().body(categoriaService.criarCategoria(nome.getNome()));
     }
+
+    @GetMapping()
+    public ResponseEntity<List<String>> obterCategorias() {
+        return ResponseEntity.ok().body(categoriaService.encontrarOsNomesDasCategorias());
+    }
+    
     
 }
