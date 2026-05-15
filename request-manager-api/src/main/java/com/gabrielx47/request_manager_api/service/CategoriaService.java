@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.gabrielx47.request_manager_api.dto.CategoriaDTO;
 import com.gabrielx47.request_manager_api.repository.CategoriaRepository;
 
 @Service
@@ -19,7 +20,7 @@ public class CategoriaService {
         return "Categoria criada com sucesso";
     }
 
-    public List<String> encontrarOsNomesDasCategorias() {
+    public List<CategoriaDTO> encontrarOsNomesDasCategorias() {
         return categoriaRepository.selecionarTodosOsNomesDasCategorias();
     }
 }

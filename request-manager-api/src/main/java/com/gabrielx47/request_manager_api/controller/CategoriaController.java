@@ -3,6 +3,7 @@ package com.gabrielx47.request_manager_api.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabrielx47.request_manager_api.dto.CategoriaDTO;
 import com.gabrielx47.request_manager_api.dto.NovaCategoriaDTO;
 import com.gabrielx47.request_manager_api.service.CategoriaService;
 
@@ -35,7 +36,7 @@ public class CategoriaController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<String>> obterCategorias() {
+    public ResponseEntity<List<CategoriaDTO>> obterCategorias() {
         return ResponseEntity.ok().body(categoriaService.encontrarOsNomesDasCategorias());
     }
     
