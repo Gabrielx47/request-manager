@@ -16,3 +16,10 @@ export interface SolicitacaoCompleta {
     nomeDoSolicitante: string;
     cpfCnpj: string;
 }
+
+export interface Filtro {
+  status?: string;
+  dataInicial?: Date;
+  dataFinal?: Date;
+  categoria?: string;
+}
