@@ -16,6 +16,10 @@ Sistema de gerenciamento de solicitações de pagamento com API REST e interface
 - **Node.js** - Versão 20.19.0 ou superior, ou 22.12.0 ou superior
 - **npm** - Gerenciador de pacotes (incluído com Node.js)
 
+### Scripts do banco de dados 
+- O script de criação do banco está na pasta Database na raiz do repositório.
+- O arquivo de inserção de dados está na pasta resources do projeto da API.
+
 ## 🚀 Como Executar a Aplicação
 
 ### Opção 1: Execução Local (Recomendado para Desenvolvimento)
