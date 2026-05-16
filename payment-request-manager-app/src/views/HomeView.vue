@@ -11,7 +11,7 @@ const message = ref('');
 const messageSeverity = ref('');
 const isMessageVisible = ref(false);
 const numeroDaPagina = ref(0);
-const numeroDeRegistros = ref(2);
+const numeroDeRegistros = ref(5);
 const baseUrl = "http://localhost:5000" 
 
 let solicitacoes = reactive<Solicitacao[]>([]);
