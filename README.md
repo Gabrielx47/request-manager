@@ -1,7 +1,111 @@
-# request-manager
+# Request Manager
 
-## Como executar a aplicação
+Sistema de gerenciamento de solicitações de pagamento com API REST e interface web moderna, desenvolvido usando Spring Boot/Java e Vue/TypeScript.
 
-- Execute a API usando o comando `./mvnw spring-boot:run`
-- Em seguida, instale todos o pacotes da aplicação web usando comando `npm install`
-- Para executar a aplicação web use o comando `npm run dev`
+## 📋 Requisitos do Sistema
+
+### Para toda a aplicação
+- **Git** - Para clonar e gerenciar o repositório
+
+### Para a API (`request-manager-api`)
+- **Java 21** - Desenvolvida com Spring Boot 4.0.6
+- **Maven** - Build tool (incluído com o `mvnw`)
+- **Docker** e **Docker Compose** (obrigatório) - Para executar o banco de dados MySQL em contêineres
+
+### Para a Aplicação Web (`payment-request-manager-app`)
+- **Node.js** - Versão 20.19.0 ou superior, ou 22.12.0 ou superior
+- **npm** - Gerenciador de pacotes (incluído com Node.js)
+
+## 🚀 Como Executar a Aplicação
+
+### Opção 1: Execução Local (Recomendado para Desenvolvimento)
+
+#### 1. Preparar a API
+```bash
+# Navegue até a pasta da API
+cd request-manager-api
+
+# Instale e compile o projeto (apenas na primeira vez)
+./mvnw clean install
+
+# Execute a API
+./mvnw spring-boot:run
+```
+
+A API estará disponível em `http://localhost:5000`
+
+#### 2. Preparar a Aplicação Web (em outro terminal)
+```bash
+# Navegue até a pasta da aplicação web
+cd payment-request-manager-app
+
+# Instale as dependências (apenas na primeira vez)
+npm install
+
+# Execute o servidor de desenvolvimento
+npm run dev
+```
+
+A aplicação web estará disponível em `http://localhost:5173` (ou outro porta informada pelo Vite)
+
+#### 3. Acessar a Aplicação
+Abra o navegador e acesse: `http://localhost:5173`
+
+
+## 📁 Estrutura do Projeto
+
+```
+request-manager/
+├── request-manager-api/          # API REST em Spring Boot
+│   ├── src/
+│   │   ├── main/java/            # Código-fonte da API
+│   │   └── resources/            # Arquivos de configuração
+│   ├── pom.xml                   # Configuração Maven
+│   └── mvnw                       # Maven Wrapper
+│
+└── payment-request-manager-app/  # Frontend em Vue.js + TypeScript
+    ├── src/
+    │   ├── components/           # Componentes Vue
+    │   ├── views/                # Páginas/Views
+    │   ├── router/               # Configuração de rotas
+    │   ├── types/                # Tipos TypeScript
+    │   └── assets/               # Assets estáticos
+    ├── package.json              # Dependências npm
+    └── vite.config.ts            # Configuração do Vite
+```
+
+
+## 🔌 Portas Padrão
+
+- **API Rest**: `http://localhost:5000`
+- **Aplicação Web**: `http://localhost:5173` 
+
+## 🐛 Troubleshooting
+
+### Problema: "Maven não encontrado"
+**Solução**: Use `./mvnw` (no Linux/Mac) ou `mvnw.cmd` (no Windows)
+
+### Problema: "Porta 5000 já está em uso"
+**Solução**: Altere a porta no arquivo `request-manager-api/src/main/resources/application.properties`:
+```properties
+server.port=8081
+```
+
+### Problema: "npm: comando não encontrado"
+**Solução**: Instale Node.js da versão recomendada em `https://nodejs.org/`
+
+### Problema: "Erro ao conectar com a API"
+**Solução**: Verifique se a API está rodando em `localhost:5000` e ajuste a URL base no arquivo de configuração da aplicação web se necessário.
+
+## 📚 Documentação Adicional
+
+- [API Documentation](./request-manager-api/README.md)
+- [Frontend README](./payment-request-manager-app/README.md)
+
+## 👨‍💻 Desenvolvedor
+
+Gabriel x47
+
+## 📝 Licença
+
+Este projeto é de código aberto.
