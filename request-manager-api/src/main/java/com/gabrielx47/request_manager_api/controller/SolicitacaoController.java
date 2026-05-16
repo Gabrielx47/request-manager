@@ -1,5 +1,6 @@
 package com.gabrielx47.request_manager_api.controller;
 
+import com.gabrielx47.request_manager_api.dto.NovaSolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoStatusDTO;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 
@@ -59,6 +62,11 @@ public class SolicitacaoController {
     @PatchMapping("/{id}")
     public ResponseEntity<String> atualizarStatusDaSolicitacao(@PathVariable Long id, @RequestBody @Valid SolicitacaoStatusDTO status) {
         return ResponseEntity.ok(solicitacaoService.atualizarStatusDaSolicitacao(id, status.getStatus()));
+    }
+    
+    @PostMapping()
+    public ResponseEntity<String> criarNovaSolicitacao(@Valid @RequestBody NovaSolicitacaoDTO novaSolicitacao) {
+        return ResponseEntity.ok(solicitacaoService.salvarNovaSolicitacao(novaSolicitacao));
     }
     
 }

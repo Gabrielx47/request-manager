@@ -3,13 +3,14 @@ package com.gabrielx47.request_manager_api.dto;
 
 public class SolicitanteDTO {
     private Long id;
-    private String nome;
     private String cpfCnpj;
+    private String nome;
+    
     
     public SolicitanteDTO() {
     }
 
-    public SolicitanteDTO(Long id, String nome, String cpfCnpj) {
+    public SolicitanteDTO(Long id,  String cpfCnpj, String nome) {
         this.id = id;
         this.nome = nome;
         this.cpfCnpj = cpfCnpj;

@@ -1,11 +1,11 @@
 package com.gabrielx47.request_manager_api.service;
 
+import com.gabrielx47.request_manager_api.dto.NovaSolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
 import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
-import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
 
 import org.springframework.data.domain.Page;
@@ -14,7 +14,6 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class SolicitacaoService {
@@ -84,6 +83,11 @@ public class SolicitacaoService {
             // Transição de status para o mesmo status ou transição inválida
             return false;
         }
-        
+    }
+
+    public String salvarNovaSolicitacao(NovaSolicitacaoDTO solicitacao) {
+        solicitacaoRepository.inserirNovaSolicitacao(solicitacao.getDescricao(), solicitacao.getDataSolicitacao(), solicitacao.getValor(),
+         solicitacao.getStatus(), solicitacao.getSolicitante_id(), solicitacao.getCategoria_id());
+        return "Solicitação criada com sucesso";
     }
 }

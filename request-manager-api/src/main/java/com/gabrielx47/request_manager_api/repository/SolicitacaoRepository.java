@@ -1,5 +1,6 @@
 package com.gabrielx47.request_manager_api.repository;
 
+import com.gabrielx47.request_manager_api.dto.NovaSolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
@@ -7,6 +8,7 @@ import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
 
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -93,4 +95,11 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     @Transactional
     @NativeQuery(value = "UPDATE tb_solicitacao SET status = :status WHERE id = :id")
     void atualizarStatusDaSolicitacao(Long id, String status);
+
+    @Modifying
+    @Transactional
+    @NativeQuery(value = "INSERT INTO tb_solicitacao (descricao, valor, data_solicitacao, status, solicitante_id, categoria_id) "+ 
+                        "VALUES (:descricao, :valor, :data_solicitacao, :status, :solicitante_id, :categoria_id)")    
+    void inserirNovaSolicitacao(String descricao, LocalDate data_solicitacao, BigDecimal valor, String status, Long solicitante_id, 
+                    Long categoria_id);
 }
