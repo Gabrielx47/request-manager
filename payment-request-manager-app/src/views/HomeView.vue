@@ -3,6 +3,7 @@ import { reactive, ref, onMounted } from 'vue';
 import { DataTable, Column, Select, Dialog, Message, Button, DatePicker} from 'primevue';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
 import type { Solicitacao, SolicitacaoCompleta, Filtro } from '../types/solicitacao';
 
 const loading = ref(false);
@@ -127,6 +128,12 @@ async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
 onMounted(() => {
     listarDadosDasSolicitacoes();
     encontrarTodasCategorias();
+
+    if(history.state && history.state.mensagemDeCriacaoDaSolicitacao) {
+      message.value = history.state.mensagemDeCriacaoDaSolicitacao;
+      messageSeverity.value = "success";
+      isMessageVisible.value = true;
+    }
   });
 
 </script>
@@ -143,7 +150,12 @@ onMounted(() => {
     <template #header>
       <div class="table-header">
         <h2>Solicitações de Pagamento</h2>
-        <Button label="Filtrar"  @click="isVisibleFilterDialog = true" icon="pi pi-filter" iconPos="right"/>
+        <div style="display: flex; gap: 1rem;">
+          <Button label="Filtrar"  @click="isVisibleFilterDialog = true" icon="pi pi-filter" iconPos="right"/>
+            <RouterLink to="/solicitacoes" >
+              <Button label="Criar" icon="pi pi-plus-circle" iconPos="right"></Button>
+            </RouterLink>
+        </div>
       </div>
     </template>
 

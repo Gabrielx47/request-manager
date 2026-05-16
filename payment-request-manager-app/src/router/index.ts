@@ -5,8 +5,8 @@ import SolicitacaoView from "@/views/SolicitacaoView.vue";
 
 
 const routes = [
-    {path: '/', component: HomeView},
-    {path: '/solicitacoes/:id', component: SolicitacaoView, props: true}
+    {path: '/', component: HomeView, name: "Home"},
+    {path: '/solicitacoes', component: SolicitacaoView, props: true}
 ];
 
 export const router = createRouter({
