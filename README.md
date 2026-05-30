@@ -2,6 +2,8 @@
 
 Sistema de gerenciamento de solicitações de pagamento com API REST e interface web moderna, desenvolvido usando Spring Boot/Java e Vue/TypeScript.
 
+![Tela de Home da Aplicação](./docs/assets/home_page.png)
+
 ## 📋 Requisitos do Sistema
 
 ### Para toda a aplicação
