@@ -196,7 +196,7 @@ onMounted(() => {
         <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon dateFormat="yy-mm-dd"/>
         <DatePicker v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
       </div>
-      <Select v-model="filtro.categoria" placeholder="Categoria" :options="categorias" />
+      <Select v-model="filtro.categoria" placeholder="Categoria" :options="categorias" option-label="nome" option-value="nome" />
       <div style="display: flex; gap: 1rem; align-self: center;" >
         <Button label="Limpar" icon="pi pi-filter-slash" iconPos="right" @click="limparFiltros" class="p-button-danger" />
         <Button label="Aplicar" icon="pi pi-filter-fill" iconPos="right" @click="aplicarFiltros" />
