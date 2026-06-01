@@ -2,7 +2,10 @@
 
 Sistema de gerenciamento de solicitações de pagamento com API REST e interface web moderna, desenvolvido usando Spring Boot/Java e Vue/TypeScript.
 
+## Tela Inicial
 ![Tela de Home da Aplicação](./docs/assets/home_page.png)
+
+
 
 ## 📋 Requisitos do Sistema
 
@@ -79,6 +82,14 @@ request-manager/
     ├── package.json              # Dependências npm
     └── vite.config.ts            # Configuração do Vite
 ```
+
+#### Transição de Status das Solicitações
+
+![Digrama de Estatos de Transição de Status da Solicitação](./docs/state_diagram.png)
+
+#### Modelo de Dados
+
+![Diagrama do Banco de Dados](./docs/data_model.png)
 
 
 ## 🔌 Portas Padrão
