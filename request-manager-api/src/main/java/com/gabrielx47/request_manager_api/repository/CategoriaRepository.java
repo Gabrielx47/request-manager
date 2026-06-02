@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gabrielx47.request_manager_api.dto.CategoriaDTO;
 import com.gabrielx47.request_manager_api.model.entity.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>    {
@@ -17,5 +16,5 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long>    {
     void inserirCategoria(String nome);
 
     @NativeQuery(value = "SELECT * FROM tb_categoria")
-    List<CategoriaDTO> selecionarTodosOsNomesDasCategorias();
+    List<Categoria> selecionarTodosOsNomesDasCategorias();
 }
