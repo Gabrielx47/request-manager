@@ -77,7 +77,7 @@ async function  listarDadosDasSolicitacoes() {
   const params: any = {};
   
   if (filtro.status) params.status = filtro.status;
-  if (filtro.dataInicial) params.dataInicial = filtro.dataInicial.toISOString().split('T')[0]; 
+  if (filtro.dataInicial) params.dataInicio = filtro.dataInicial.toISOString().split('T')[0]; 
   if (filtro.dataFinal) params.dataFinal = filtro.dataFinal.toISOString().split('T')[0]; 
   if (filtro.categoria) params.categoria = filtro.categoria;
   params.numeroDaPagina = numeroDaPagina.value;
