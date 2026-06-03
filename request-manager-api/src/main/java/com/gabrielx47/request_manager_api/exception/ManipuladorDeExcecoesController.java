@@ -47,4 +47,11 @@ public class ManipuladorDeExcecoesController {
         problemDetail.setTitle("Data Vazia");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
+    @ExceptionHandler(DataFinalAnteriorADataInicialException.class)
+    public ResponseEntity<ProblemDetail> tratarDataFinalMenorQueDataInicialException(DataFinalAnteriorADataInicialException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        problemDetail.setTitle("Data Final Anterior à Data Inicial");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);   
+    }
 }

@@ -4,6 +4,7 @@ import com.gabrielx47.request_manager_api.dto.NovaSolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
+import com.gabrielx47.request_manager_api.exception.DataFinalAnteriorADataInicialException;
 import com.gabrielx47.request_manager_api.exception.DataFinalNulaException;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
 import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
@@ -27,8 +28,12 @@ public class SolicitacaoService {
     public PagedModel<SolicitacaoListagemDTO> listarParteDasSolicitacoes(String status, LocalDate dataInicio, LocalDate dataFim, String categoria, Pageable pageable) {
         Page<SolicitacaoListagemDTO> solicitacoes;
 
-        if (dataInicio != null && dataFim == null) {
-            throw new DataFinalNulaException("A data final é obrigatória.");
+        if (dataInicio != null) {
+            if(dataFim == null) {
+                throw new DataFinalNulaException("A data final é obrigatória.");
+            } else if (dataFim.isBefore(dataInicio)) {
+                throw new DataFinalAnteriorADataInicialException("A data final não pode ser anterior à data inicial.");
+            }
         }
 
         if (status != null && categoria != null && dataInicio != null && dataFim != null) {
