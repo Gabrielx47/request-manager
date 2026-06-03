@@ -40,4 +40,11 @@ public class ManipuladorDeExcecoesController {
         problemDetail.setProperty("errors", erros);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
+    @ExceptionHandler(DataFinalNulaException.class)
+    public ResponseEntity<ProblemDetail> tratarDataFinalNulaException(DataFinalNulaException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        problemDetail.setTitle("Data Vazia");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
 }
