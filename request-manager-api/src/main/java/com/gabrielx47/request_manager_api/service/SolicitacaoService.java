@@ -25,9 +25,8 @@ public class SolicitacaoService {
 
     public PagedModel<SolicitacaoListagemDTO> listarParteDasSolicitacoes(String status, LocalDate dataInicio, LocalDate dataFim, String categoria, Pageable pageable) {
         Page<SolicitacaoListagemDTO> solicitacoes;
-        if(status == null && dataInicio == null && dataFim == null && categoria == null) {
-            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesSemFiltro(pageable);
-        } else if (status != null && categoria != null && dataInicio != null && dataFim != null) {
+
+        if (status != null && categoria != null && dataInicio != null && dataFim != null) {
             solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(status, dataInicio, dataFim, categoria, pageable);
         } else if (status != null && dataInicio != null && dataFim != null) {
             solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodo(status, dataInicio, dataFim, pageable);
@@ -42,7 +41,7 @@ public class SolicitacaoService {
         } else if (categoria != null) {
             solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltroCategoria(categoria, pageable);
         } else {
-            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesComFiltrosStatusPeriodoCategoria(status, dataInicio, dataFim, categoria, pageable);
+            solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesSemFiltro(pageable);
         }
 
         return new PagedModel<SolicitacaoListagemDTO>(solicitacoes);
