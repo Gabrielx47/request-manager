@@ -111,6 +111,15 @@ server.port=8081
 ### Problema: "npm: comando não encontrado"
 **Solução**: Instale Node.js da versão recomendada em `https://nodejs.org/`
 
+### Problema: "HOST_PORT do container do MySQL já está em uso"
+**Solução**: Acesse o arquivo `docker-compose.yml` e altere a propriedade `ports` do serviço do MySQL. O HOST_PORT fica localizado antes dos dois pontos, como mostra o exemplo abaixo ⬇️.
+
+**Exemplo**:
+```
+    ports:
+        3000:3603    # HOST_PORT : CONTAINER_PORT
+```
+
 ### Problema: "Erro ao conectar com a API"
 **Solução**: Verifique se a API está rodando em `localhost:5000` e ajuste a URL base no arquivo de configuração da aplicação web se necessário.
 
@@ -121,7 +130,7 @@ server.port=8081
 
 ## 👨‍💻 Desenvolvedor
 
-Gabriel x47
+Gabrielx47
 
 ## 📝 Licença
 
