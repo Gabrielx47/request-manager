@@ -112,6 +112,8 @@ server.port=8081
 **Solução**: Instale Node.js da versão recomendada em `https://nodejs.org/`
 
 ### Problema: "HOST_PORT do container do MySQL já está em uso"
+Esse problema ocorre quando o docker inicializa o serviço do Mysql e tenta reservar a porta 3000 (como mostra o exemplo) do computador. Porém, ela já está em uso por outro programa, impedindo assim, a conexão entre o container e a máquina. 
+
 **Solução**: Acesse o arquivo `docker-compose.yml` e altere a propriedade `ports` do serviço do MySQL. O HOST_PORT fica localizado antes dos dois pontos, como mostra o exemplo abaixo ⬇️.
 
 **Exemplo**:
