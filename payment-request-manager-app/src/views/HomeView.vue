@@ -13,7 +13,7 @@ const isMessageVisible = ref(false);
 const numeroDaPagina = ref(0);
 const numeroDeRegistros = ref(5);
 const baseUrl = "http://localhost:5000" 
-const erro = ref<any>();
+let erro = reactive<any>(null);
 const isError = ref(false);
 
 let solicitacoes = reactive<Solicitacao[]>([]);
@@ -31,8 +31,12 @@ const filtro = reactive<Filtro>({
 });
 
 async function aplicarFiltros() {
-  listarDadosDasSolicitacoes();
-  isError.value ? isVisibleFilterDialog.value = false : isVisibleFilterDialog.value = true;
+  await listarDadosDasSolicitacoes();
+
+  console.log("Is error true or false?", isError.value);
+  if(!isError.value) {
+    isVisibleFilterDialog.value = false;
+  }
 }
 
 function limparFiltros() {
@@ -85,17 +89,16 @@ async function  listarDadosDasSolicitacoes() {
   params.numeroDaPagina = numeroDaPagina.value;
   params.numeroDeElementosPorPagina = numeroDeRegistros.value;
 
-  try {
-    const response = await axios.get(`${baseUrl}/solicitacoes`, { params });
+  isError.value = false;
+  await axios.get(`${baseUrl}/solicitacoes`, { params }).then( (response) => {
     solicitacoes.splice(0, solicitacoes.length, ...response.data.content);
     totalRecords.value = response.data.page.totalElements;
-  } catch (error: any) {
-    erro.value = error.response?.data?.detail;
+  }).catch((error: any) => {
+    console.log('Deu error ao aplicar filtros!!');
+    erro = error.response?.data?.detail;
     isError.value = true;
     console.error('Erro ao aplicar filtros:', error);
-    //message.value = 'Erro ao aplicar filtros';
-    messageSeverity.value = 'error';
-  }
+  });
 }
 
 
@@ -200,7 +203,7 @@ onMounted(() => {
         <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon dateFormat="yy-mm-dd"/>
         <DatePicker v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
       </div>
-      <Message v-if="erro" severity="error" size="small" variant="simple" :life="10000">{{erro}}</Message>
+      <Message v-if="isError" severity="error" size="small" variant="simple" :life="10000">{{erro}}</Message>
       <Select v-model="filtro.categoria" placeholder="Categoria" :options="categorias" option-label="nome" option-value="nome" />
       <div style="display: flex; gap: 1rem; align-self: center;" >
         <Button label="Limpar" icon="pi pi-filter-slash" iconPos="right" @click="limparFiltros" class="p-button-danger" />
