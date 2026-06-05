@@ -34,6 +34,8 @@ public class SolicitacaoService {
             } else if (dataFim.isBefore(dataInicio)) {
                 throw new DataFinalAnteriorADataInicialException("A data final não pode ser anterior à data inicial.");
             }
+        } else if (dataFim != null) {
+            throw new DataFinalNulaException("A data inicial é obrigatória.");
         }
 
         if (status != null && categoria != null && dataInicio != null && dataFim != null) {
