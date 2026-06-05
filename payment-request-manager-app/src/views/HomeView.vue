@@ -202,12 +202,17 @@ onMounted(() => {
 
   <Dialog v-model:visible="isVisibleFilterDialog" header="Filtrar Solicitações" modal>
     <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <span><strong>Status</strong></span>
       <Select v-model="filtro.status" placeholder="Status" :options="['SOLICITADO', 'LIBERADO', 'APROVADO', 'REJEITADO', 'CANCELADO']" />
+
+      <span><strong>Período</strong></span>
       <div style="display: flex; gap: 1rem;">
         <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon />
         <DatePicker v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
       </div>
       <Message v-if="isError" severity="error" size="small" variant="simple" :life="10000">{{erro}}</Message>
+
+      <span><strong>Categoria</strong></span>
       <Select v-model="filtro.categoria" placeholder="Categoria" :options="categorias" option-label="nome" option-value="nome" />
       <div style="display: flex; gap: 1rem; align-self: center;" >
         <Button label="Limpar" icon="pi pi-filter-slash" iconPos="right" @click="limparFiltros" class="p-button-danger" />
