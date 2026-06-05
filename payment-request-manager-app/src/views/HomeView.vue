@@ -13,6 +13,8 @@ const isMessageVisible = ref(false);
 const numeroDaPagina = ref(0);
 const numeroDeRegistros = ref(5);
 const baseUrl = "http://localhost:5000" 
+const erro = ref<any>();
+const isError = ref(false);
 
 let solicitacoes = reactive<Solicitacao[]>([]);
 const totalRecords = ref(0);
@@ -30,7 +32,7 @@ const filtro = reactive<Filtro>({
 
 async function aplicarFiltros() {
   listarDadosDasSolicitacoes();
-  isVisibleFilterDialog.value = false;
+  isError.value ? isVisibleFilterDialog.value = false : isVisibleFilterDialog.value = true;
 }
 
 function limparFiltros() {
@@ -87,9 +89,11 @@ async function  listarDadosDasSolicitacoes() {
     const response = await axios.get(`${baseUrl}/solicitacoes`, { params });
     solicitacoes.splice(0, solicitacoes.length, ...response.data.content);
     totalRecords.value = response.data.page.totalElements;
-  } catch (error) {
+  } catch (error: any) {
+    erro.value = error.response?.data?.detail;
+    isError.value = true;
     console.error('Erro ao aplicar filtros:', error);
-    message.value = 'Erro ao aplicar filtros';
+    //message.value = 'Erro ao aplicar filtros';
     messageSeverity.value = 'error';
   }
 }
@@ -115,7 +119,7 @@ async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
       message.value = response.data;
       messageSeverity.value = 'success';
       isMessageVisible.value = true;
-    }).catch(error => {
+    }).catch((error: any) => {
       console.error('Erro ao atualizar status:', error);
       message.value = error.response?.data?.detail || 'Erro ao atualizar status';
       messageSeverity.value = 'error';
@@ -196,6 +200,7 @@ onMounted(() => {
         <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon dateFormat="yy-mm-dd"/>
         <DatePicker v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
       </div>
+      <Message v-if="erro" severity="error" size="small" variant="simple" :life="10000">{{erro}}</Message>
       <Select v-model="filtro.categoria" placeholder="Categoria" :options="categorias" option-label="nome" option-value="nome" />
       <div style="display: flex; gap: 1rem; align-self: center;" >
         <Button label="Limpar" icon="pi pi-filter-slash" iconPos="right" @click="limparFiltros" class="p-button-danger" />
