@@ -200,7 +200,7 @@ onMounted(() => {
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <Select v-model="filtro.status" placeholder="Status" :options="['SOLICITADO', 'LIBERADO', 'APROVADO', 'REJEITADO', 'CANCELADO']" />
       <div style="display: flex; gap: 1rem;">
-        <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon dateFormat="yy-mm-dd"/>
+        <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon />
         <DatePicker v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
       </div>
       <Message v-if="isError" severity="error" size="small" variant="simple" :life="10000">{{erro}}</Message>
