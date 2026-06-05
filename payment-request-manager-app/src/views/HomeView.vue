@@ -167,7 +167,11 @@ onMounted(() => {
     </template>
 
     <Column field="nomeDoSolicitante" header="Nome"></Column>
-    <Column field="cpfCnpj" header="CPF/CNPJ"></Column>
+    <Column field="cpfCnpj" header="CPF/CNPJ">
+      <template #body="slotProps">
+        {{ slotProps.data.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') }}
+      </template>
+    </Column>
     <Column field="nomeDaCategoria" header="Categoria"></Column>  
     <Column field="status" header="Status">
       <template #body="{data}">
@@ -187,7 +191,7 @@ onMounted(() => {
   <Dialog v-model:visible="isVisibleDetailDialog" header="Detalhes da Solicitação" modal>
     <div v-if="solicitacaoCompleta" modal >
         <p><strong>Solicitante:</strong> {{ solicitacaoCompleta.nomeDoSolicitante }}</p>
-        <p><strong>CPF/CNPJ:</strong> {{ solicitacaoCompleta.cpfCnpj }}</p>
+        <p><strong>CPF/CNPJ:</strong> {{ solicitacaoCompleta.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5')}}</p>
         <p><strong>Data da Solicitação:</strong> {{ solicitacaoCompleta.dataSolicitacao.toLocaleDateString() }}</p>
         <p><strong>Status:</strong> {{ solicitacaoCompleta.status }}</p>
         <p><strong>Categoria:</strong> {{ solicitacaoCompleta.nomeDaCategoria }}</p>
