@@ -41,8 +41,8 @@ public class ManipuladorDeExcecoesController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
-    @ExceptionHandler(DataFinalNulaException.class)
-    public ResponseEntity<ProblemDetail> tratarDataFinalNulaException(DataFinalNulaException e) {
+    @ExceptionHandler(DataNulaException.class)
+    public ResponseEntity<ProblemDetail> tratarDataFinalNulaException(DataNulaException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
         problemDetail.setTitle("Data Vazia");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);

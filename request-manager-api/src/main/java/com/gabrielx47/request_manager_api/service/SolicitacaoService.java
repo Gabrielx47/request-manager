@@ -5,7 +5,7 @@ import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.exception.DataFinalAnteriorADataInicialException;
-import com.gabrielx47.request_manager_api.exception.DataFinalNulaException;
+import com.gabrielx47.request_manager_api.exception.DataNulaException;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
 import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
@@ -30,12 +30,12 @@ public class SolicitacaoService {
 
         if (dataInicio != null) {
             if(dataFim == null) {
-                throw new DataFinalNulaException("A data final é obrigatória.");
+                throw new DataNulaException("A data final é obrigatória.");
             } else if (dataFim.isBefore(dataInicio)) {
                 throw new DataFinalAnteriorADataInicialException("A data final não pode ser anterior à data inicial.");
             }
         } else if (dataFim != null) {
-            throw new DataFinalNulaException("A data inicial é obrigatória.");
+            throw new DataNulaException("A data inicial é obrigatória.");
         }
 
         if (status != null && categoria != null && dataInicio != null && dataFim != null) {
