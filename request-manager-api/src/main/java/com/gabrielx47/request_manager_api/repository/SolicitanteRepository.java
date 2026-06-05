@@ -18,5 +18,5 @@ public interface SolicitanteRepository extends JpaRepository<Solicitante, Long> 
     void inserirSolicitante(String nome, String cpfCnpj);
 
     @Query(value = "SELECT * FROM tb_solicitante", nativeQuery = true)
-    List<SolicitanteDTO> selecionarTodosOsdadosDosSolicitantes();
+    List<Solicitante> selecionarTodosOsdadosDosSolicitantes();
 }
