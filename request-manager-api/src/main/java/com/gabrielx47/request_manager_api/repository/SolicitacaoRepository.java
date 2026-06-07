@@ -1,10 +1,9 @@
 package com.gabrielx47.request_manager_api.repository;
 
-import com.gabrielx47.request_manager_api.dto.NovaSolicitacaoDTO;
-import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
+import com.gabrielx47.request_manager_api.projection.SolicitacaoCompletaProjection;
 
 import jakarta.transaction.Transactional;
 
@@ -86,7 +85,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
                         "INNER JOIN tb_categoria AS c ON s.categoria_id = c.id " +
                         "INNER JOIN tb_solicitante AS l ON s.solicitante_id = l.id " +
                         "WHERE s.id = :id")
-    Optional<SolicitacaoCompletaDTO> selecionarTodosDadosDaSolicitacaoPorId(Long id);
+    Optional<SolicitacaoCompletaProjection> selecionarTodosDadosDaSolicitacaoPorId(Long id);
 
     @NativeQuery(value = "SELECT id, descricao, valor, data_solicitacao, status FROM tb_solicitacao WHERE id = :id")
     Optional<SolicitacaoDTO> encontrarSolicitacaoPorId(Long id);

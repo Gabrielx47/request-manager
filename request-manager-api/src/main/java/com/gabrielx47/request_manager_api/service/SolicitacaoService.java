@@ -8,6 +8,8 @@ import com.gabrielx47.request_manager_api.exception.DataFinalAnteriorADataInicia
 import com.gabrielx47.request_manager_api.exception.DataNulaException;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
 import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
+import com.gabrielx47.request_manager_api.mapper.SolicitacaoMapper;
+import com.gabrielx47.request_manager_api.projection.SolicitacaoCompletaProjection;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
 
 import org.springframework.data.domain.Page;
@@ -20,9 +22,11 @@ import java.time.LocalDate;
 @Service
 public class SolicitacaoService {
     private SolicitacaoRepository solicitacaoRepository;
+    private SolicitacaoMapper solicitacaoMapper;
 
-    public SolicitacaoService(SolicitacaoRepository solicitacaoRepository) {
+    public SolicitacaoService(SolicitacaoRepository solicitacaoRepository, SolicitacaoMapper solicitacaoMapper) {
         this.solicitacaoRepository = solicitacaoRepository;
+        this.solicitacaoMapper = solicitacaoMapper;
     }
 
     public PagedModel<SolicitacaoListagemDTO> listarParteDasSolicitacoes(String status, LocalDate dataInicio, LocalDate dataFim, String categoria, Pageable pageable) {
@@ -60,8 +64,9 @@ public class SolicitacaoService {
     }
 
     public SolicitacaoCompletaDTO encontrarTodosOsDadosDaSolicitacao(Long id) {
-        return solicitacaoRepository.selecionarTodosDadosDaSolicitacaoPorId(id)
-        .orElseThrow(() -> new RecursoNaoEncontradoException("Solicitação não encontrada"));    
+        SolicitacaoCompletaProjection solicitacaoCompleta =solicitacaoRepository.selecionarTodosDadosDaSolicitacaoPorId(id)
+        .orElseThrow(() -> new RecursoNaoEncontradoException("Solicitação não encontrada"));
+        return solicitacaoMapper.mapearSolicitacaoCompletaProjectionParaSolicitacaoCompletaDTO(solicitacaoCompleta);
     }
 
     public String atualizarStatusDaSolicitacao(Long id, String status) {
