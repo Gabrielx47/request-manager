@@ -84,6 +84,7 @@ request-manager/
 ```
 
 #### Transição de Status das Solicitações
+Como o diagrama abaixo ilustra, o status de uma solicitação de pagamento pode assumir diversos estados. Toda solicitação inicia com o status `SOLICITADO` e pode chega ao estágio final com o status `REJEITADO` ou `CANCELADO`.
 
 ![Digrama de Estatos de Transição de Status da Solicitação](./docs/state_diagram.png)
 
