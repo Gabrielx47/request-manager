@@ -10,6 +10,7 @@ import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoExceptio
 import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
 import com.gabrielx47.request_manager_api.mapper.SolicitacaoMapper;
 import com.gabrielx47.request_manager_api.projection.SolicitacaoCompletaProjection;
+import com.gabrielx47.request_manager_api.projection.SolicitacaoListagemProjection;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
 
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class SolicitacaoService {
     }
 
     public PagedModel<SolicitacaoListagemDTO> listarParteDasSolicitacoes(String status, LocalDate dataInicio, LocalDate dataFim, String categoria, Pageable pageable) {
-        Page<SolicitacaoListagemDTO> solicitacoes;
+        Page<SolicitacaoListagemProjection> solicitacoes;
 
         if (dataInicio != null) {
             if(dataFim == null) {
@@ -60,7 +61,7 @@ public class SolicitacaoService {
             solicitacoes = solicitacaoRepository.selecionarParteDasSolicitacoesSemFiltro(pageable);
         }
 
-        return new PagedModel<SolicitacaoListagemDTO>(solicitacoes);
+        return new PagedModel<SolicitacaoListagemDTO>(solicitacaoMapper.mapearPageSolicitacaoListagemProjectionParaSolicitacaoListagemDTO(solicitacoes));
     }
 
     public SolicitacaoCompletaDTO encontrarTodosOsDadosDaSolicitacao(Long id) {
