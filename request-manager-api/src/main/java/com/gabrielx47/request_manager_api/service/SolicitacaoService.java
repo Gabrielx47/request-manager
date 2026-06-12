@@ -103,8 +103,7 @@ public class SolicitacaoService {
     }
 
     public String salvarNovaSolicitacao(NovaSolicitacaoDTO solicitacao) {
-        solicitacaoRepository.inserirNovaSolicitacao(solicitacao.getDescricao(), solicitacao.getDataSolicitacao(), solicitacao.getValor(),
-         solicitacao.getStatus(), solicitacao.getSolicitante_id(), solicitacao.getCategoria_id());
+        solicitacaoRepository.inserirNovaSolicitacao(solicitacaoMapper.mapearNovaSolicitacaoDTOParaSolicitacao(solicitacao));
         return "Solicitação criada com sucesso";
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
     @Query(value = "SELECT s.id, l.nome AS nomeDoSolicitante, l.cpf_cnpj, c.nome AS nomeDaCategoria, s.status, s.valor " +
@@ -98,7 +99,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     @Modifying
     @Transactional
     @NativeQuery(value = "INSERT INTO tb_solicitacao (descricao, valor, data_solicitacao, status, solicitante_id, categoria_id) "+ 
-                        "VALUES (:descricao, :valor, :data_solicitacao, :status, :solicitante_id, :categoria_id)")    
-    void inserirNovaSolicitacao(String descricao, LocalDate data_solicitacao, BigDecimal valor, String status, Long solicitante_id, 
-                    Long categoria_id);
+                        "VALUES (:#{#solicitacao.getDescricao()}, :#{#solicitacao.getValor()}, :#{#solicitacao.getDataSolicitacao()}, :#{#solicitacao.getStatus().name()}, :#{#solicitacao.getSolicitante().getId()}, :#{#solicitacao.getCategoria().getId()})")    
+    void inserirNovaSolicitacao(@Param("solicitacao") Solicitacao solicitacao);
+
 }
