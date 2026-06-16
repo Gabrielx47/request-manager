@@ -83,6 +83,9 @@ request-manager/
     └── vite.config.ts            # Configuração do Vite
 ```
 
+#### Casos de Uso
+![Digrama de Casos de Uso do Sistema de Gestão de Solicitação de Pagamentos](./docs/use-cases-diagram.png)
+
 #### Transição de Status das Solicitações
 Como o diagrama abaixo ilustra, o status de uma solicitação de pagamento pode assumir diversos estados. Toda solicitação inicia com o status `SOLICITADO` e pode chega ao estágio final com o status `REJEITADO` ou `CANCELADO`.
 
