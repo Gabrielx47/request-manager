@@ -95,7 +95,13 @@ onMounted(() => {
     <div class="fields">
       <div style="width: 100%;" >
         <span><strong>CPF/CNPJ</strong></span>
-        <Select style="width: 100%;" placeholder="CPF/CNPJ" :options="solicitantes" option-label="cpfCnpj" option-value="id" v-model="novaSolicitacao.solicitante_id" @change="erros.solicitante_id = ''"/>
+        <Select style="width: 100%;" placeholder="CPF/CNPJ" :options="solicitantes" option-label="cpfCnpj" option-value="id" v-model="novaSolicitacao.solicitante_id" @change="erros.solicitante_id = ''">
+        <template #option="slotProps">
+          <div>
+            {{ slotProps.option.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') }}
+          </div>
+        </template>
+      </Select>
         <Message v-if="erros.solicitante_id" severity="error" size="small" variant="simple" :life="10000">{{erros.solicitante_id}}</Message>
       </div>
       
