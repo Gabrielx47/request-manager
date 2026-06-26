@@ -9,6 +9,8 @@ import com.gabrielx47.request_manager_api.exception.DataNulaException;
 import com.gabrielx47.request_manager_api.exception.RecursoNaoEncontradoException;
 import com.gabrielx47.request_manager_api.exception.TransicaoDeStatusDaInvalidaException;
 import com.gabrielx47.request_manager_api.mapper.SolicitacaoMapper;
+import com.gabrielx47.request_manager_api.model.entity.Solicitacao;
+import com.gabrielx47.request_manager_api.model.entity.Status;
 import com.gabrielx47.request_manager_api.projection.SolicitacaoCompletaProjection;
 import com.gabrielx47.request_manager_api.projection.SolicitacaoListagemProjection;
 import com.gabrielx47.request_manager_api.repository.SolicitacaoRepository;
@@ -71,14 +73,19 @@ public class SolicitacaoService {
     }
 
     public String atualizarStatusDaSolicitacao(Long id, String status) {
-        SolicitacaoDTO solicitacao = solicitacaoRepository.encontrarSolicitacaoPorId(id)
+        Solicitacao solicitacao = solicitacaoRepository.encontrarSolicitacaoPorId(id)
         .orElseThrow(() -> new RecursoNaoEncontradoException("Solicitação não encontrada"));
 
-        String statusAtual = solicitacao.getStatus();
+        Status statusAtual = solicitacao.getStatus();
 
-        if (!transicaoDeStatusEValida(statusAtual, status)) {
-            throw new TransicaoDeStatusDaInvalidaException("Transição de status " + statusAtual + " para " + status + " é inválida");
+        if (!statusAtual.transicaoValida(status)) {
+            throw new TransicaoDeStatusDaInvalidaException(
+                    "Transição de status " + statusAtual.getNome() + " para " + status + " é inválida");
         }
+
+        /*if (!transicaoDeStatusEValida(statusAtual, status)) {
+            throw new TransicaoDeStatusDaInvalidaException("Transição de status " + statusAtual + " para " + status + " é inválida");
+        }*/
 
         solicitacaoRepository.atualizarStatusDaSolicitacao(id, status);
         return "Status da solicitação atualizado com sucesso";

@@ -88,8 +88,8 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
                         "WHERE s.id = :id")
     Optional<SolicitacaoCompletaProjection> selecionarTodosDadosDaSolicitacaoPorId(Long id);
 
-    @NativeQuery(value = "SELECT id, descricao, valor, data_solicitacao, status FROM tb_solicitacao WHERE id = :id")
-    Optional<SolicitacaoDTO> encontrarSolicitacaoPorId(Long id);
+    @NativeQuery(value = "SELECT id, descricao, valor, data_solicitacao, status, solicitante_id, categoria_id FROM tb_solicitacao WHERE id = :id")
+    Optional<Solicitacao> encontrarSolicitacaoPorId(Long id);
 
     @Modifying
     @Transactional
