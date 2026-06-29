@@ -2,7 +2,6 @@ package com.gabrielx47.request_manager_api.service;
 
 import com.gabrielx47.request_manager_api.dto.NovaSolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoCompletaDTO;
-import com.gabrielx47.request_manager_api.dto.SolicitacaoDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitacaoListagemDTO;
 import com.gabrielx47.request_manager_api.exception.DataFinalAnteriorADataInicialException;
 import com.gabrielx47.request_manager_api.exception.DataNulaException;
@@ -83,30 +82,8 @@ public class SolicitacaoService {
                     "Transição de status " + statusAtual.getNome() + " para " + status + " é inválida");
         }
 
-        /*if (!transicaoDeStatusEValida(statusAtual, status)) {
-            throw new TransicaoDeStatusDaInvalidaException("Transição de status " + statusAtual + " para " + status + " é inválida");
-        }*/
-
         solicitacaoRepository.atualizarStatusDaSolicitacao(id, status);
         return "Status da solicitação atualizado com sucesso";
-    }
-
-    private boolean transicaoDeStatusEValida(String statusAtual, String novoStatus) {
-        if (statusAtual.equals("SOLICITADO") && (novoStatus.equals("LIBERADO") || novoStatus.equals("REJEITADO"))) {
-            System.out.println("(SOLICITADO) Transição de status válida: " + statusAtual + " para " + novoStatus);
-            return true; 
-        } else if (statusAtual.equals("LIBERADO") && (novoStatus.equals("REJEITADO") || novoStatus.equals("APROVADO"))) {
-            System.out.println("(LIBERADO) Transição de status válida: " + statusAtual + " para " + novoStatus);
-            return true;
-        } else if (statusAtual.equals("APROVADO") && novoStatus.equals("CANCELADO")) {
-            System.out.println("(APROVADO) Transição de status válida: " + statusAtual + " para " + novoStatus);
-            return true;
-        } else if (statusAtual.equals("REJEITADO") && statusAtual.equals("CANCELADO")) {
-            return false;
-        } else{
-            // Transição de status para o mesmo status ou transição inválida
-            return false;
-        }
     }
 
     public String salvarNovaSolicitacao(NovaSolicitacaoDTO solicitacao) {
