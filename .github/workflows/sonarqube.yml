@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: 21
 
@@ -38,7 +38,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=request-manager-api
+        working-directory: ./request-manager-api
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=request-manager-api -Dsonar.organization=gabrielx47
 
   frontend:
     name: Vue
@@ -55,3 +56,6 @@ jobs:
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
         with:
           projectBaseDir: payment-request-manager-app
+          args: >
+              -Dsonar.projectKey=payment-request-manager-app
+              -Dsonar.organization=sua_organizacao_do_sonarcloud
