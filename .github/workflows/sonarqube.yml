@@ -59,4 +59,4 @@ jobs:
           projectBaseDir: payment-request-manager-app
           args: >
               -Dsonar.projectKey=payment-request-manager-app
-              -Dsonar.organization=sua_organizacao_do_sonarcloud
+              -Dsonar.organization=gabrielx47
