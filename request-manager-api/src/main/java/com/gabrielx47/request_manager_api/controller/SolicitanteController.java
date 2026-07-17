@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gabrielx47.request_manager_api.dto.CategoriaDTO;
 import com.gabrielx47.request_manager_api.dto.NovoSolicitanteDTO;
 import com.gabrielx47.request_manager_api.dto.SolicitanteDTO;
 import com.gabrielx47.request_manager_api.service.SolicitanteService;
@@ -21,7 +20,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/solicitantes")
 public class SolicitanteController {
-    SolicitanteService solicitanteService;
+    private final SolicitanteService solicitanteService;
 
     public SolicitanteController(SolicitanteService solicitanteService) {
         this.solicitanteService = solicitanteService;

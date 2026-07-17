@@ -12,8 +12,8 @@ import com.gabrielx47.request_manager_api.repository.SolicitanteRepository;
 
 @Service
 public class SolicitanteService {
-    SolicitanteRepository solicitanteRepository;
-    SolicitanteMapper solicitanteMapper;
+    private final SolicitanteRepository solicitanteRepository;
+    private final SolicitanteMapper solicitanteMapper;
 
     public SolicitanteService(SolicitanteRepository solicitanteRepository, SolicitanteMapper solicitanteMapper) {
         this.solicitanteRepository = solicitanteRepository;

@@ -23,8 +23,8 @@ import java.time.LocalDate;
 
 @Service
 public class SolicitacaoService {
-    private SolicitacaoRepository solicitacaoRepository;
-    private SolicitacaoMapper solicitacaoMapper;
+    private final SolicitacaoRepository solicitacaoRepository;
+    private final SolicitacaoMapper solicitacaoMapper;
 
     public SolicitacaoService(SolicitacaoRepository solicitacaoRepository, SolicitacaoMapper solicitacaoMapper) {
         this.solicitacaoRepository = solicitacaoRepository;

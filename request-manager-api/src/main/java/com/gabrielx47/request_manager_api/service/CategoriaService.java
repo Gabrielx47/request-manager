@@ -8,12 +8,11 @@ import com.gabrielx47.request_manager_api.dto.CategoriaDTO;
 import com.gabrielx47.request_manager_api.mapper.CategoriaMapper;
 import com.gabrielx47.request_manager_api.model.entity.Categoria;
 import com.gabrielx47.request_manager_api.repository.CategoriaRepository;
-import com.gabrielx47.request_manager_api.mapper.CategoriaMapper;
 
 @Service
 public class CategoriaService {
-    private CategoriaRepository categoriaRepository;
-    private CategoriaMapper categoriaMapper;
+    private final CategoriaRepository categoriaRepository;
+    private final CategoriaMapper categoriaMapper;
 
     public CategoriaService(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
         this.categoriaRepository = categoriaRepository;
