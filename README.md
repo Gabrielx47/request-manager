@@ -58,6 +58,24 @@ A aplicação web estará disponível em `http://localhost:5173` (ou outro porta
 #### 3. Acessar a Aplicação
 Abra o navegador e acesse: `http://localhost:5173`
 
+## 🚀 Como Executar os testes das Aplicações
+
+### Aplicação Web
+```bash
+# Navegue até a pasta da aplicação web
+cd payment-request-manager-app
+
+# Instale as dependências (apenas na primeira vez)
+npm install
+
+# Execute todos os testes (terminal é usado para mostrar o resultado) 
+npm cypress run 
+
+# Ou execute os testes usando o Test Runner UI
+npx cypress open
+```
+
+
 
 ## 📁 Estrutura do Projeto
 
