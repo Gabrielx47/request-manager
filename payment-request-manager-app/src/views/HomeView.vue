@@ -4,6 +4,7 @@ import { DataTable, Column, Select, Dialog, Message, Button, DatePicker} from 'p
 import 'primeicons/primeicons.css';
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
+import SolicitacaoDetalhesDialog from '../components/SolicitacaoDetalhesDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro } from '../types/solicitacao';
 
 const loading = ref(false);
@@ -188,17 +189,10 @@ onMounted(() => {
     </Column>  
   </DataTable>
 
-  <Dialog v-model:visible="isVisibleDetailDialog" header="Detalhes da Solicitação" modal>
-    <div v-if="solicitacaoCompleta" modal >
-        <p><strong>Solicitante:</strong> {{ solicitacaoCompleta.nomeDoSolicitante }}</p>
-        <p><strong>CPF/CNPJ:</strong> {{ solicitacaoCompleta.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5')}}</p>
-        <p><strong>Data da Solicitação:</strong> {{ solicitacaoCompleta.dataSolicitacao.toLocaleDateString() }}</p>
-        <p><strong>Status:</strong> {{ solicitacaoCompleta.status }}</p>
-        <p><strong>Categoria:</strong> {{ solicitacaoCompleta.nomeDaCategoria }}</p>
-        <p><strong>Valor:</strong> R$ {{ solicitacaoCompleta.valor.toFixed(2) }}</p>
-        <p><strong>Descrição:</strong> {{ solicitacaoCompleta.descricao }}</p>
-    </div>
-  </Dialog>
+  <SolicitacaoDetalhesDialog
+    v-model="isVisibleDetailDialog"
+    :solicitacao="solicitacaoCompleta ?? null"
+  />
 
   <Dialog v-model:visible="isVisibleFilterDialog" header="Filtrar Solicitações" modal>
     <div style="display: flex; flex-direction: column; gap: 1rem;">
