@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue';
+import { reactive, ref, onMounted, computed } from 'vue';
 import { DataTable, Column, Select, Dialog, Message, Button, DatePicker} from 'primevue';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
-import SolicitacaoDetalhesDialog from '../components/SolicitacaoDetalhesDialog.vue';
-import type { Solicitacao, SolicitacaoCompleta, Filtro } from '../types/solicitacao';
+import DetailsDialog from '../components/DetailsDialog.vue';
+import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
 
 const loading = ref(false);
 const message = ref('');
@@ -21,6 +21,21 @@ let solicitacoes = reactive<Solicitacao[]>([]);
 const totalRecords = ref(0);
 
 const solicitacaoCompleta = ref<SolicitacaoCompleta>();
+const camposDetalhes = computed<CampoDetalhe[]>(() => {
+  if (!solicitacaoCompleta.value) {
+    return [];
+  }
+
+  return [
+    { titulo: 'Solicitante', valor: solicitacaoCompleta.value.nomeDoSolicitante },
+    { titulo: 'CPF/CNPJ', valor: solicitacaoCompleta.value.cpfCnpj },
+    { titulo: 'Data da Solicitação', valor: new Date(solicitacaoCompleta.value.dataSolicitacao).toLocaleDateString('pt-BR') },
+    { titulo: 'Status', valor: solicitacaoCompleta.value.status },
+    { titulo: 'Categoria', valor: solicitacaoCompleta.value.nomeDaCategoria },
+    { titulo: 'Valor', valor: `R$ ${solicitacaoCompleta.value.valor.toFixed(2)}` },
+    { titulo: 'Descrição', valor: solicitacaoCompleta.value.descricao },
+  ];
+});
 const isVisibleDetailDialog = ref(false);
 const isVisibleFilterDialog = ref(false);
 const categorias = ref<string[]>([]);
@@ -189,9 +204,9 @@ onMounted(() => {
     </Column>  
   </DataTable>
 
-  <SolicitacaoDetalhesDialog
+  <DetailsDialog
     v-model="isVisibleDetailDialog"
-    :solicitacao="solicitacaoCompleta ?? null"
+    :campos="camposDetalhes"
   />
 
   <Dialog v-model:visible="isVisibleFilterDialog" header="Filtrar Solicitações" modal>
