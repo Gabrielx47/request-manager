@@ -17,6 +17,11 @@ export interface SolicitacaoCompleta {
     cpfCnpj: string;
 }
 
+export interface CampoDetalhe {
+    titulo: string;
+    valor: string | number | null | undefined;
+}
+
 export interface CamposErros {
     descricao?: string;
     valor?: string;
