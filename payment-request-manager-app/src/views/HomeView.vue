@@ -6,6 +6,7 @@ import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
+import { buscarTodosOsDadosDaSolicitacao } from '../services/solicitacao.service';
 
 const loading = ref(false);
 const message = ref('');
@@ -61,28 +62,6 @@ function limparFiltros() {
    filtro.dataFinal = undefined; 
    filtro.categoria = undefined; 
 }
-
-
-async function buscarTodosOsDadosDaSolicitacao(id: number) {
-  axios.get(`${baseUrl}/solicitacoes/${id}`)
-    .then(response => {
-      const dados = response.data;
-      solicitacaoCompleta.value = {
-        descricao: dados.descricao,
-        valor: dados.valor,
-        dataSolicitacao: new Date(dados.dataSolicitacao),
-        status: dados.status,
-        nomeDaCategoria: dados.nomeDaCategoria,
-        nomeDoSolicitante: dados.nomeDoSolicitante,
-        cpfCnpj: dados.cpfCnpj
-      };
-      isVisibleDetailDialog.value = true;
-    })
-    .catch(error => {
-      console.error('Erro ao buscar dados da solicitação:', error);
-    });
-}
-
 
 function onPage(event: any) {
   const { page, rows } = event;
@@ -148,6 +127,15 @@ async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
     listarDadosDasSolicitacoes();
 }
 
+function carregarDetalhesDaSolicitacao(id: number) {
+  buscarTodosOsDadosDaSolicitacao(id).then(dados => {
+    if (dados) {
+      solicitacaoCompleta.value = dados;
+      isVisibleDetailDialog.value = true;
+    }
+  });
+}
+
 onMounted(() => {
     listarDadosDasSolicitacoes();
     encontrarTodasCategorias();
@@ -200,7 +188,7 @@ onMounted(() => {
       </template>
     </Column>
     <Column #body="{data}">
-      <Button  label="Detalhes" class="p-button-info" icon="pi pi-info-circle" iconPos="right" @click="buscarTodosOsDadosDaSolicitacao(data.id)"/>
+      <Button  label="Detalhes" class="p-button-info" icon="pi pi-info-circle" iconPos="right" @click="carregarDetalhesDaSolicitacao(data.id)"/>
     </Column>  
   </DataTable>
 
