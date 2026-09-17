@@ -6,7 +6,10 @@ import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
-import { buscarTodosOsDadosDaSolicitacao } from '../services/solicitacao.service';
+import {
+  buscarTodosOsDadosDaSolicitacao,
+  atualizarStatusDaSolicitacao as atualizarStatusDaSolicitacaoService
+} from '../services/solicitacao.service';
 
 const loading = ref(false);
 const message = ref('');
@@ -111,20 +114,14 @@ async function encontrarTodasCategorias() {
 async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
     console.log(`Atualizando status da solicitação ${id} para ${novoStatus}`);
     console.log("isMessageVisible antes da atualização:", isMessageVisible.value);
-    
-    await axios.patch(`${baseUrl}/solicitacoes/${id}`, { status: novoStatus }).then(response => {
-      console.log('Resposta da atualização de status:', response.data);
-      message.value = response.data;
-      messageSeverity.value = 'success';
-      isMessageVisible.value = true;
-    }).catch((error: any) => {
-      console.error('Erro ao atualizar status:', error);
-      message.value = error.response?.data?.detail || 'Erro ao atualizar status';
-      messageSeverity.value = 'error';
-      isMessageVisible.value = true;
-    });
 
-    listarDadosDasSolicitacoes();
+    const resultado = await atualizarStatusDaSolicitacaoService(id, novoStatus);
+
+    message.value = resultado.mensagem;
+    messageSeverity.value = resultado.sucesso ? 'success' : 'error';
+    isMessageVisible.value = true;
+
+    await listarDadosDasSolicitacoes();
 }
 
 function carregarDetalhesDaSolicitacao(id: number) {
