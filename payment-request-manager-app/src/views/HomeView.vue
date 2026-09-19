@@ -6,10 +6,7 @@ import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
-import {
-  buscarTodosOsDadosDaSolicitacao,
-  atualizarStatusDaSolicitacao as atualizarStatusDaSolicitacaoService
-} from '../services/solicitacao.service';
+import solicitacaoService from '../services/solicitacao.service';
 
 const loading = ref(false);
 const message = ref('');
@@ -115,7 +112,7 @@ async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
     console.log(`Atualizando status da solicitação ${id} para ${novoStatus}`);
     console.log("isMessageVisible antes da atualização:", isMessageVisible.value);
 
-    const resultado = await atualizarStatusDaSolicitacaoService(id, novoStatus);
+    const resultado = await solicitacaoService.atualizarStatusDaSolicitacao(id, novoStatus);
 
     message.value = resultado.mensagem;
     messageSeverity.value = resultado.sucesso ? 'success' : 'error';
@@ -125,7 +122,7 @@ async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
 }
 
 function carregarDetalhesDaSolicitacao(id: number) {
-  buscarTodosOsDadosDaSolicitacao(id).then(dados => {
+  solicitacaoService.buscarTodosOsDadosDaSolicitacao(id).then(dados => {
     if (dados) {
       solicitacaoCompleta.value = dados;
       isVisibleDetailDialog.value = true;
