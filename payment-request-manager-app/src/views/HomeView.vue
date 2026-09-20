@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, computed } from 'vue';
+import { reactive, ref, onMounted, computed, inject } from 'vue';
 import { DataTable, Column, Select, Dialog, Message, Button, DatePicker} from 'primevue';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
-import solicitacaoService from '../services/solicitacao.service';
+import solicitacaoServiceDefault, { type SolicitacaoService } from '../services/solicitacao.service';
+
+const solicitacaoService = inject('solicitacaoService');
 
 const loading = ref(false);
 const message = ref('');
