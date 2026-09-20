@@ -8,11 +8,11 @@ import Material from '@primeuix/themes/material'
 import Nora from '@primeuix/themes/nora'
 import { router } from './router'
 import App from './App.vue'
-import solicitacaoService from './services/solicitacao.service'
+import solicitacaoService, { solicitacaoServiceKey } from './services/solicitacao.service'
 
 const app = createApp(App)
 
-app.provide('solicitacaoService', solicitacaoService)
+app.provide(solicitacaoServiceKey, solicitacaoService)
 
 app.use(PrimeVue, {
     theme : {

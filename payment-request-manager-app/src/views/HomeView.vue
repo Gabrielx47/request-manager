@@ -6,9 +6,9 @@ import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
-import solicitacaoServiceDefault, { type SolicitacaoService } from '../services/solicitacao.service';
+import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
 
-const solicitacaoService = inject('solicitacaoService');
+const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
 
 const loading = ref(false);
 const message = ref('');
