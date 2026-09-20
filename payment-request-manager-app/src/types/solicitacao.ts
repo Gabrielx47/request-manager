@@ -46,3 +46,23 @@ export interface Filtro {
   dataFinal?: Date;
   categoria?: string;
 }
+
+export type ErrosSolicitacao = {
+  dataSolicitacao?: string;
+  descricao?: string;
+  categoria_id?: string;
+  solicitante_id?: string;
+  status?: string;
+  valor?: string;
+};
+
+export type ResultadoCriacaoSolicitacao =
+  | {
+      sucesso: true;
+      mensagem: string;
+    }
+  | {
+      sucesso: false;
+      mensagem: string;
+      erros: ErrosSolicitacao;
+    };

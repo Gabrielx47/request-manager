@@ -1,4 +1,6 @@
 import axios from "axios";
+import type { InjectionKey } from "vue";
+import type { ResultadoCriacaoSolicitacao } from "../types/solicitacao";
 
 class SolicitacaoService {
   private readonly baseUrl = "http://localhost:5000";
@@ -20,6 +22,47 @@ class SolicitacaoService {
     } catch (error) {
       console.error("Erro ao buscar dados da solicitação:", error);
       return null;
+    }
+  }
+
+  async criarNovaSolicitacao(payload: {
+    descricao?: string;
+    valor?: number;
+    dataSolicitacao?: Date | null;
+    status?: string;
+    categoria_id?: number;
+    solicitante_id?: number;
+  }): Promise<ResultadoCriacaoSolicitacao> {
+    try {
+      const response = await axios.post(`${this.baseUrl}/solicitacoes`, {
+        descricao: payload.descricao,
+        valor: payload.valor,
+        dataSolicitacao: payload.dataSolicitacao?.toISOString().split("T")[0],
+        status: payload.status,
+        categoria_id: payload.categoria_id,
+        solicitante_id: payload.solicitante_id,
+      });
+
+      return {
+        sucesso: true,
+        mensagem: response.data,
+      };
+    } catch (error: any) {
+      const errors = error.response?.data?.errors ?? {};
+      console.error("Erro ao criar solicitação:", error);
+
+      return {
+        sucesso: false,
+        mensagem: error.response?.data?.detail ?? "Erro ao criar solicitação",
+        erros: {
+          dataSolicitacao: errors.dataSolicitacao,
+          descricao: errors.descricao,
+          categoria_id: errors.categoria_id,
+          solicitante_id: errors.solicitante_id,
+          status: errors.status,
+          valor: errors.valor,
+        },
+      };
     }
   }
 
@@ -46,6 +89,8 @@ class SolicitacaoService {
 }
 
 const solicitacaoService = new SolicitacaoService();
+
+export const solicitacaoServiceKey: InjectionKey<SolicitacaoService> = Symbol("solicitacaoService");
 
 export { SolicitacaoService };
 export default solicitacaoService;
