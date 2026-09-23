@@ -3,20 +3,19 @@ import { ref, onMounted, reactive, inject } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { Button, Select, DatePicker, InputNumber, InputText, Message } from 'primevue';
 import type { NovaSolicitacao } from '@/types/solicitacao';
-import axios from 'axios';
 import type { Categoria } from '@/types/categoria';
 import type { Solicitante } from '@/types/solicitante';
 import type { CamposErros } from '@/types/solicitacao';
 import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
+import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
 
 const router = useRouter();
 const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
+const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
 
 function navegarParaHome() {
   router.push("/");
 }
-
-const baseUrl = "http://localhost:5000" 
 
 const novaSolicitacao = reactive<NovaSolicitacao>({
     descricao: undefined,
@@ -39,16 +38,19 @@ const erros = reactive<CamposErros>({
 const categorias = ref<Categoria[]>([]);
 const solicitantes = ref<Solicitante[]>([]);
 
-function obterCategorias() {
-  axios.get(`${baseUrl}/categorias`).then((response) => {
-    categorias.value = response.data;
-  });
+async function obterCategorias() {
+  categorias.value = await categoriaService.buscarTodasAsCategorias();
 }
 
 function obterSolicitantes() {
-  axios.get(`${baseUrl}/solicitantes`).then((response) => {
-    solicitantes.value = response.data;
-  });
+  fetch("http://localhost:5000/solicitantes")
+    .then((response) => response.json())
+    .then((data) => {
+      solicitantes.value = data;
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar solicitantes:", error);
+    });
 }
 
 async function criarNovaSolicitacao() {
