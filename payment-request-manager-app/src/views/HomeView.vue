@@ -6,8 +6,11 @@ import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
 import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
+import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
+import type { Categoria } from '@/types/categoria.ts';
 
 const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
+const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
 
 const loading = ref(false);
 const message = ref('');
@@ -40,7 +43,7 @@ const camposDetalhes = computed<CampoDetalhe[]>(() => {
 });
 const isVisibleDetailDialog = ref(false);
 const isVisibleFilterDialog = ref(false);
-const categorias = ref<string[]>([]);
+const categorias = ref<Categoria[]>([]);
 const filtro = reactive<Filtro>({
   status: undefined,
   dataInicial: undefined,
@@ -97,14 +100,8 @@ async function listarDadosDasSolicitacoes() {
 
 
 async function encontrarTodasCategorias() {
-  try {
-    const response = await fetch(`${baseUrl}/categorias`);
-    const data = await response.json();
-    categorias.value = data;
-    console.log('Categorias recebidas:', data);
-  } catch (error) {
-    console.error('Erro ao buscar categorias:', error);
-  }
+  const resultado = await categoriaService.buscarTodasAsCategorias();
+  categorias.value = resultado as Categoria[];  
 }
 
 async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {
