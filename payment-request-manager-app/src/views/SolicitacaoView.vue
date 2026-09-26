@@ -8,10 +8,12 @@ import type { Solicitante } from '@/types/solicitante';
 import type { CamposErros } from '@/types/solicitacao';
 import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
 import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
+import solicitanteServiceDefault, { solicitanteServiceKey } from '../services/solicitante.service';
 
 const router = useRouter();
 const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
 const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
+const solicitanteService = inject(solicitanteServiceKey, solicitanteServiceDefault);
 
 function navegarParaHome() {
   router.push("/");
@@ -42,15 +44,8 @@ async function obterCategorias() {
   categorias.value = await categoriaService.buscarTodasAsCategorias();
 }
 
-function obterSolicitantes() {
-  fetch("http://localhost:5000/solicitantes")
-    .then((response) => response.json())
-    .then((data) => {
-      solicitantes.value = data;
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar solicitantes:", error);
-    });
+async function obterSolicitantes() {
+  solicitantes.value = await solicitanteService.buscarTodosOsSolicitantes();
 }
 
 async function criarNovaSolicitacao() {
