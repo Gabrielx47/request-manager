@@ -18,7 +18,6 @@ const messageSeverity = ref('');
 const isMessageVisible = ref(false);
 const numeroDaPagina = ref(0);
 const numeroDeRegistros = ref(5);
-const baseUrl = "http://localhost:5000";
 let erro = reactive<any>(null);
 const isError = ref(false);
 

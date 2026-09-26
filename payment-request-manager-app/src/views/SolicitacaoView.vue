@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive, inject } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { Button, Select, DatePicker, InputNumber, InputText, Message } from 'primevue';
 import type { NovaSolicitacao } from '@/types/solicitacao';
 import type { Categoria } from '@/types/categoria';
