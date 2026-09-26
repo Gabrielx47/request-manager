@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, computed } from 'vue';
+import { reactive, ref, onMounted, computed, inject } from 'vue';
 import { DataTable, Column, Select, Dialog, Message, Button, DatePicker} from 'primevue';
 import 'primeicons/primeicons.css';
-import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
-import solicitacaoService from '../services/solicitacao.service';
+import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
+import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
+import type { Categoria } from '@/types/categoria.ts';
+
+const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
+const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
 
 const loading = ref(false);
 const message = ref('');
@@ -14,7 +18,6 @@ const messageSeverity = ref('');
 const isMessageVisible = ref(false);
 const numeroDaPagina = ref(0);
 const numeroDeRegistros = ref(5);
-const baseUrl = "http://localhost:5000" 
 let erro = reactive<any>(null);
 const isError = ref(false);
 
@@ -39,7 +42,7 @@ const camposDetalhes = computed<CampoDetalhe[]>(() => {
 });
 const isVisibleDetailDialog = ref(false);
 const isVisibleFilterDialog = ref(false);
-const categorias = ref<string[]>([]);
+const categorias = ref<Categoria[]>([]);
 const filtro = reactive<Filtro>({
   status: undefined,
   dataInicial: undefined,
@@ -73,39 +76,31 @@ function onPage(event: any) {
   loading.value = false;
 }
 
-async function  listarDadosDasSolicitacoes() {
+async function listarDadosDasSolicitacoes() {
   console.log(`Buscando dados para página ${numeroDaPagina.value} com ${numeroDeRegistros.value} registros por página.`);
-  const params: any = {};
-  
-  if (filtro.status) params.status = filtro.status;
-  if (filtro.dataInicial) params.dataInicio = filtro.dataInicial.toISOString().split('T')[0]; 
-  if (filtro.dataFinal) params.dataFinal = filtro.dataFinal.toISOString().split('T')[0]; 
-  if (filtro.categoria) params.categoria = filtro.categoria;
-  params.numeroDaPagina = numeroDaPagina.value;
-  params.numeroDeElementosPorPagina = numeroDeRegistros.value;
 
   isError.value = false;
-  await axios.get(`${baseUrl}/solicitacoes`, { params }).then( (response) => {
-    solicitacoes.splice(0, solicitacoes.length, ...response.data.content);
-    totalRecords.value = response.data.page.totalElements;
-  }).catch((error: any) => {
-    console.log('Deu error ao aplicar filtros!!');
-    erro = error.response?.data?.detail;
-    isError.value = true;
-    console.error('Erro ao aplicar filtros:', error);
+
+  const resultado = await solicitacaoService.listarSolicitacoes({
+    ...filtro,
+    numeroDaPagina: numeroDaPagina.value,
+    numeroDeElementosPorPagina: numeroDeRegistros.value,
   });
+
+  if (resultado.erro) {
+    erro = resultado.erro;
+    isError.value = true;
+    return;
+  }
+
+  solicitacoes.splice(0, solicitacoes.length, ...resultado.solicitacoes);
+  totalRecords.value = resultado.totalRecords;
 }
 
 
 async function encontrarTodasCategorias() {
-  try {
-    const response = await fetch(`${baseUrl}/categorias`);
-    const data = await response.json();
-    categorias.value = data;
-    console.log('Categorias recebidas:', data);
-  } catch (error) {
-    console.error('Erro ao buscar categorias:', error);
-  }
+  const resultado = await categoriaService.buscarTodasAsCategorias();
+  categorias.value = resultado as Categoria[];  
 }
 
 async function atualizarStatusDaSolicitacao(id: number, novoStatus: string) {

@@ -1,20 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { ref, onMounted, reactive, inject } from 'vue';
+import { useRouter } from 'vue-router';
 import { Button, Select, DatePicker, InputNumber, InputText, Message } from 'primevue';
 import type { NovaSolicitacao } from '@/types/solicitacao';
-import axios from 'axios';
 import type { Categoria } from '@/types/categoria';
 import type { Solicitante } from '@/types/solicitante';
 import type { CamposErros } from '@/types/solicitacao';
+import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
+import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
+import solicitanteServiceDefault, { solicitanteServiceKey } from '../services/solicitante.service';
 
 const router = useRouter();
+const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
+const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
+const solicitanteService = inject(solicitanteServiceKey, solicitanteServiceDefault);
 
 function navegarParaHome() {
   router.push("/");
 }
-
-const baseUrl = "http://localhost:5000" 
 
 const novaSolicitacao = reactive<NovaSolicitacao>({
     descricao: undefined,
@@ -37,49 +40,48 @@ const erros = reactive<CamposErros>({
 const categorias = ref<Categoria[]>([]);
 const solicitantes = ref<Solicitante[]>([]);
 
-function obterCategorias() {
-  axios.get(`${baseUrl}/categorias`).then((response) => {
-    categorias.value = response.data;
-  });
+async function obterCategorias() {
+  categorias.value = await categoriaService.buscarTodasAsCategorias();
 }
 
-function obterSolicitantes() {
-  axios.get(`${baseUrl}/solicitantes`).then((response) => {
-    solicitantes.value = response.data;
-  });
+async function obterSolicitantes() {
+  solicitantes.value = await solicitanteService.buscarTodosOsSolicitantes();
 }
 
-function criarNovaSolicitacao() {
-  axios.post(`${baseUrl}/solicitacoes`, {
-    descricao : novaSolicitacao.descricao,
-    valor : novaSolicitacao.valor,
-    dataSolicitacao : novaSolicitacao.dataDaSolicitacao?.toISOString().split("T")[0],
-    status : novaSolicitacao.status,
-    categoria_id : novaSolicitacao.categoria_id,
-    solicitante_id : novaSolicitacao.solicitante_id
-  }).then((response) => {
-    console.log("Solicitação criada:" + response.data);
-    router.push({name: "Home", state: {mensagemDeCriacaoDaSolicitacao: response.data}} )
-  }).catch(error => {
-    console.log("Erro na criação da solicitação: " + error.response.data.errors);
-    console.log("Erro na criação da solicitação: " + error.response.data.errors.cpfCnpj);
-    erros.dataSolicitacao = error.response.data.errors?.dataSolicitacao;
-    erros.descricao = error.response.data.errors?.descricao;
-    erros.categoria_id = error.response.data.errors?.categoria_id;
-    erros.solicitante_id = error.response.data.errors?.solicitante_id;
-    erros.status = error.response.data.errors?.status;
-    erros.valor = error.response.data.errors?.valor;
-
-    setTimeout(() => {
-      erros.dataSolicitacao = '';
-      erros.descricao = '';
-      erros.categoria_id = '';
-      erros.solicitante_id = '';
-      erros.status = '';
-      erros.valor = '';
-    }, 10000);
-
+async function criarNovaSolicitacao() {
+  const resultado = await solicitacaoService.criarNovaSolicitacao({
+    descricao: novaSolicitacao.descricao,
+    valor: novaSolicitacao.valor,
+    dataSolicitacao: novaSolicitacao.dataDaSolicitacao,
+    status: novaSolicitacao.status,
+    categoria_id: novaSolicitacao.categoria_id,
+    solicitante_id: novaSolicitacao.solicitante_id,
   });
+
+  if (resultado.sucesso) {
+    console.log("Solicitação criada:" + resultado.mensagem);
+    router.push({name: "Home", state: {mensagemDeCriacaoDaSolicitacao: resultado.mensagem}} );
+    return;
+  }
+
+  if (!resultado.sucesso) {
+    const errosApi = resultado.erros ?? {};
+    erros.dataSolicitacao = errosApi.dataSolicitacao;
+    erros.descricao = errosApi.descricao;
+    erros.categoria_id = errosApi.categoria_id;
+    erros.solicitante_id = errosApi.solicitante_id;
+    erros.status = errosApi.status;
+    erros.valor = errosApi.valor;
+  }
+
+  setTimeout(() => {
+    erros.dataSolicitacao = '';
+    erros.descricao = '';
+    erros.categoria_id = '';
+    erros.solicitante_id = '';
+    erros.status = '';
+    erros.valor = '';
+  }, 10000);
 }
 
 onMounted(() => {

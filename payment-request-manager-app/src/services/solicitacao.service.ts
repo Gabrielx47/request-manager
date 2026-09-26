@@ -1,7 +1,52 @@
 import axios from "axios";
+import type { InjectionKey } from "vue";
+import type { Filtro, ResultadoCriacaoSolicitacao, Solicitacao } from "../types/solicitacao";
 
 class SolicitacaoService {
   private readonly baseUrl = "http://localhost:5000";
+
+  async listarSolicitacoes(filtro: Filtro & { numeroDaPagina?: number; numeroDeElementosPorPagina?: number }) {
+    const params: Record<string, string | number> = {};
+
+    if (filtro.status) {
+      params.status = filtro.status;
+    }
+    if (filtro.dataInicial) {
+      const dataInicio = filtro.dataInicial.toISOString().split("T")[0];
+      if (dataInicio) {
+        params.dataInicio = dataInicio;
+      }
+    }
+    if (filtro.dataFinal) {
+      const dataFinal = filtro.dataFinal.toISOString().split("T")[0];
+      if (dataFinal) {
+        params.dataFinal = dataFinal;
+      }
+    }
+    if (filtro.categoria) {
+      params.categoria = filtro.categoria;
+    }
+    params.numeroDaPagina = filtro.numeroDaPagina ?? 0;
+    params.numeroDeElementosPorPagina = filtro.numeroDeElementosPorPagina ?? 5;
+
+    try {
+      const response = await axios.get(`${this.baseUrl}/solicitacoes`, { params });
+
+      return {
+        solicitacoes: response.data.content as Solicitacao[],
+        totalRecords: response.data.page.totalElements as number,
+        erro: null,
+      };
+    } catch (error: any) {
+      console.error("Erro ao listar solicitações:", error);
+
+      return {
+        solicitacoes: [] as Solicitacao[],
+        totalRecords: 0,
+        erro: error.response?.data?.detail ?? "Erro ao listar solicitações",
+      };
+    }
+  }
 
   async buscarTodosOsDadosDaSolicitacao(id: number) {
     try {
@@ -20,6 +65,47 @@ class SolicitacaoService {
     } catch (error) {
       console.error("Erro ao buscar dados da solicitação:", error);
       return null;
+    }
+  }
+
+  async criarNovaSolicitacao(payload: {
+    descricao?: string;
+    valor?: number;
+    dataSolicitacao?: Date | null;
+    status?: string;
+    categoria_id?: number;
+    solicitante_id?: number;
+  }): Promise<ResultadoCriacaoSolicitacao> {
+    try {
+      const response = await axios.post(`${this.baseUrl}/solicitacoes`, {
+        descricao: payload.descricao,
+        valor: payload.valor,
+        dataSolicitacao: payload.dataSolicitacao?.toISOString().split("T")[0],
+        status: payload.status,
+        categoria_id: payload.categoria_id,
+        solicitante_id: payload.solicitante_id,
+      });
+
+      return {
+        sucesso: true,
+        mensagem: response.data,
+      };
+    } catch (error: any) {
+      const errors = error.response?.data?.errors ?? {};
+      console.error("Erro ao criar solicitação:", error);
+
+      return {
+        sucesso: false,
+        mensagem: error.response?.data?.detail ?? "Erro ao criar solicitação",
+        erros: {
+          dataSolicitacao: errors.dataSolicitacao,
+          descricao: errors.descricao,
+          categoria_id: errors.categoria_id,
+          solicitante_id: errors.solicitante_id,
+          status: errors.status,
+          valor: errors.valor,
+        },
+      };
     }
   }
 
@@ -46,6 +132,8 @@ class SolicitacaoService {
 }
 
 const solicitacaoService = new SolicitacaoService();
+
+export const solicitacaoServiceKey: InjectionKey<SolicitacaoService> = Symbol("solicitacaoService");
 
 export { SolicitacaoService };
 export default solicitacaoService;
