@@ -5,6 +5,23 @@ Sistema de gerenciamento de solicitações de pagamento com API REST e interface
 ## Apresentação da aplicação
 https://github.com/user-attachments/assets/991327cf-1e40-4dfd-b4cc-0e5f4365b01e
 
+## 📌 Status do Projeto
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-orange" alt="Status do projeto" />
+  <img src="https://img.shields.io/badge/Backend-Spring%20Boot%20%2F%20Java-6DB33F" alt="Backend" />
+  <img src="https://img.shields.io/badge/Frontend-Vue.js%20%2F%20TypeScript-4FC08D" alt="Frontend" />
+  <img src="https://img.shields.io/badge/Database-MySQL-4479A1" alt="Banco de dados" />
+</div>
+
+- **Status geral:** Em desenvolvimento
+- **Backend:** Spring Boot / Java
+- **Frontend:** Vue.js / TypeScript
+- **Banco de dados:** MySQL em container Docker
+- **Testes:** Cypress e testes de API em andamento
+- **Deploy:** Não configurado
+- **Objetivo:** Gerenciar solicitações de pagamento com fluxo de aprovação e status transacional
+
 ## 📋 Requisitos do Sistema
 
 ### Para toda a aplicação
