@@ -96,8 +96,8 @@ onMounted(() => {
   <div id="formNewRequest">
     <div class="fields">
       <div style="width: 100%;" >
-        <span><strong>CPF/CNPJ</strong></span>
-        <Select style="width: 100%;" placeholder="CPF/CNPJ" :options="solicitantes" option-label="cpfCnpj" option-value="id" v-model="novaSolicitacao.solicitante_id" @change="erros.solicitante_id = ''">
+        <label for="cpfCnpj">CPF/CNPJ</label>
+        <Select id="cpfCnpj" style="width: 100%;" placeholder="CPF/CNPJ" :options="solicitantes" option-label="cpfCnpj" option-value="id" v-model="novaSolicitacao.solicitante_id" @change="erros.solicitante_id = ''">
         <template #option="slotProps">
           <div>
             {{ slotProps.option.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') }}
@@ -108,36 +108,36 @@ onMounted(() => {
       </div>
       
       <div style="width: 100%;">
-        <span><strong>Data</strong></span>
-        <DatePicker style="width: 100%;" v-model="novaSolicitacao.dataDaSolicitacao" placeholder="Data" showIcon dateFormat="yy-mm-dd"/>
+        <label for="dataDaSolicitacao">Data</label>
+        <DatePicker id="dataDaSolicitacao" style="width: 100%;" v-model="novaSolicitacao.dataDaSolicitacao" placeholder="Data" showIcon dateFormat="yy-mm-dd"/>
         <Message v-if="erros.dataSolicitacao" severity="error" size="small" variant="simple" :life="10000" >{{erros.dataSolicitacao}}</Message>
       </div>
     </div>
 
     <div class="fields">
       <div style="width: 100%;">
-        <span><strong>Status</strong></span>
-        <Select style="width: 100%;" placeholder="Status" :options="['SOLICITADO']" v-model="novaSolicitacao.status" />
+        <label for="status">Status</label>
+        <Select id="status" style="width: 100%;" placeholder="Status" :options="['SOLICITADO']" v-model="novaSolicitacao.status" />
         <Message v-if="erros.status" severity="error" size="small" variant="simple" :life="10000" >{{erros.status}}</Message>
       </div>
       
       <div style="width: 100%;">
-        <span><strong>Categoria</strong></span>
-        <Select style="width: 100%;" placeholder="Categoria" :options="categorias" option-label="nome" option-value="id" v-model="novaSolicitacao.categoria_id" />
+        <label for="categoria">Categoria</label>
+        <Select id="categoria" style="width: 100%;" placeholder="Categoria" :options="categorias" option-label="nome" option-value="id" v-model="novaSolicitacao.categoria_id" />
         <Message v-if="erros.categoria_id" severity="error" size="small" variant="simple" :life="10000" >{{erros.categoria_id}}</Message>
       </div>
     </div>
 
     <div class="fields">
       <div style="width: 100%;">
-        <span><strong>Descrição</strong></span>
-        <InputText style="width: 100%;" placeholder="Descrição" v-model="novaSolicitacao.descricao" />
+        <label for="descricao">Descrição</label>
+        <InputText id="descricao" style="width: 100%;" placeholder="Descrição" v-model="novaSolicitacao.descricao" />
         <Message v-if="erros.descricao" severity="error" size="small" variant="simple" :life="10000">{{erros.descricao}}</Message>
       </div>
 
       <div style="width: 100%;">
-        <span><strong>Valor</strong></span>
-        <InputNumber style="width: 100%;" placeholder="Valor R$" v-model="novaSolicitacao.valor" />
+        <label for="valor">Valor</label>
+        <InputNumber id="valor" style="width: 100%;" placeholder="Valor R$" v-model="novaSolicitacao.valor" />
         <Message v-if="erros.valor" severity="error" size="small" variant="simple" :life="10000">{{erros.valor}}</Message>
       </div>
     </div>
