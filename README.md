@@ -12,6 +12,7 @@ https://github.com/user-attachments/assets/991327cf-1e40-4dfd-b4cc-0e5f4365b01e
   <img src="https://img.shields.io/badge/Backend-Spring%20Boot%20%2F%20Java-6DB33F" alt="Backend" />
   <img src="https://img.shields.io/badge/Frontend-Vue.js%20%2F%20TypeScript-4FC08D" alt="Frontend" />
   <img src="https://img.shields.io/badge/Database-MySQL-4479A1" alt="Banco de dados" />
+  <img src="https://sonarcloud.io/api/project_badges/measure?project=Gabrielx47_request-manager&metric=alert_status" alt="SonarCloud Status" />
 </div>
 
 - **Status geral:** Em desenvolvimento
@@ -21,6 +22,10 @@ https://github.com/user-attachments/assets/991327cf-1e40-4dfd-b4cc-0e5f4365b01e
 - **Testes:** Cypress e testes de API em andamento
 - **Deploy:** Não configurado
 - **Objetivo:** Gerenciar solicitações de pagamento com fluxo de aprovação e status transacional
+
+<div align="center">
+   <img src="https://sonarcloud.io/images/project_badges/sonarcloud-highlight.svg" alt="SonarCloud" />
+</div>
 
 ## 📋 Requisitos do Sistema
 
