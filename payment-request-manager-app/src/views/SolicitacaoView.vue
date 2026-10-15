@@ -91,8 +91,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Criar Solicitação</h1>
-  
   <div id="formNewRequest">
     <div class="fields">
       <div style="width: 100%;" >

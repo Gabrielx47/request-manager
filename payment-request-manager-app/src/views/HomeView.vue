@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, computed, inject } from 'vue';
-import { DataTable, Column, Select, Dialog, Message, Button, DatePicker} from 'primevue';
+import { DataTable, Column, Select, Dialog, Message, Button, DatePicker, Drawer } from 'primevue';
 import 'primeicons/primeicons.css';
 import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
+import SolicitacaoView from './SolicitacaoView.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
 import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
 import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
@@ -49,6 +50,8 @@ const filtro = reactive<Filtro>({
   dataFinal: undefined,
   categoria: undefined
 });
+
+const isVisibleCadastroDaSolicitacao = ref(false);
 
 async function aplicarFiltros() {
   await listarDadosDasSolicitacoes();
@@ -152,9 +155,9 @@ onMounted(() => {
         <h2>Solicitações de Pagamento</h2>
         <div style="display: flex; gap: 1rem;">
           <Button label="Filtrar"  @click="isVisibleFilterDialog = true" icon="pi pi-filter" iconPos="right"/>
-            <RouterLink to="/solicitacoes" >
-              <Button label="Criar" icon="pi pi-plus-circle" iconPos="right"></Button>
-            </RouterLink>
+            <!-- <RouterLink to="/solicitacoes" > -->
+              <Button label="Criar" icon="pi pi-plus-circle" iconPos="right" @click="isVisibleCadastroDaSolicitacao = true"></Button>
+            <!-- </RouterLink> -->
         </div>
       </div>
     </template>
@@ -206,6 +209,15 @@ onMounted(() => {
       </div>
     </div>
   </Dialog>
+
+  <Drawer
+    v-model:visible="isVisibleCadastroDaSolicitacao"
+    header="Cadastro da Solicitação de Pagamento"
+    position="right"
+    :style="{ width: '60vw', maxWidth: '700px' }"
+  >
+    <SolicitacaoView />
+  </Drawer>
   
 </template>
 
