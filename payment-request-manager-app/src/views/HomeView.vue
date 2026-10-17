@@ -2,13 +2,12 @@
 import { reactive, ref, onMounted, computed, inject } from 'vue';
 import { DataTable, Column, Select, Dialog, Message, Button, DatePicker, Drawer } from 'primevue';
 import 'primeicons/primeicons.css';
-import { RouterLink } from 'vue-router';
 import DetailsDialog from '../components/DetailsDialog.vue';
-import SolicitacaoView from './SolicitacaoView.vue';
 import type { Solicitacao, SolicitacaoCompleta, Filtro, CampoDetalhe } from '../types/solicitacao';
 import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/solicitacao.service';
 import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
 import type { Categoria } from '@/types/categoria.ts';
+import FormSolicitacao from './FormSolicitacao.vue';
 
 const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
 const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
@@ -128,6 +127,13 @@ function carregarDetalhesDaSolicitacao(id: number) {
   });
 }
 
+function showResponseMessage(text: string) {
+  isVisibleCadastroDaSolicitacao.value = false;
+  message.value = text;
+  messageSeverity.value = "success";
+  isMessageVisible.value = true;
+}
+
 onMounted(() => {
     listarDadosDasSolicitacoes();
     encontrarTodasCategorias();
@@ -216,7 +222,7 @@ onMounted(() => {
     position="right"
     :style="{ width: '60vw', maxWidth: '700px' }"
   >
-    <SolicitacaoView />
+    <FormSolicitacao  @closeFormDrawer="(trueOrFalse) => isVisibleCadastroDaSolicitacao = trueOrFalse"  @responseMessage="showResponseMessage" />
   </Drawer>
   
 </template>

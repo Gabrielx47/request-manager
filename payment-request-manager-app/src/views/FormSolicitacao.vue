@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive, inject } from 'vue';
-import { useRouter } from 'vue-router';
 import { Button, Select, DatePicker, InputNumber, InputText, Message } from 'primevue';
 import type { NovaSolicitacao } from '@/types/solicitacao';
 import type { Categoria } from '@/types/categoria';
@@ -10,13 +9,18 @@ import solicitacaoServiceDefault, { solicitacaoServiceKey } from '../services/so
 import categoriaServiceDefault, { categoriaServiceKey } from '../services/categoria.service';
 import solicitanteServiceDefault, { solicitanteServiceKey } from '../services/solicitante.service';
 
-const router = useRouter();
 const solicitacaoService = inject(solicitacaoServiceKey, solicitacaoServiceDefault);
 const categoriaService = inject(categoriaServiceKey, categoriaServiceDefault);
 const solicitanteService = inject(solicitanteServiceKey, solicitanteServiceDefault);
 
-function navegarParaHome() {
-  router.push("/");
+const emit = defineEmits(['closeFormDrawer', 'responseMessage']);
+
+function fecharDrawer() {
+  emit('closeFormDrawer', false);
+}
+
+function enviarMensagemDeResposta(mensagem: string) {
+  emit('responseMessage', mensagem);
 }
 
 const novaSolicitacao = reactive<NovaSolicitacao>({
@@ -60,7 +64,8 @@ async function criarNovaSolicitacao() {
 
   if (resultado.sucesso) {
     console.log("Solicitação criada:" + resultado.mensagem);
-    router.push({name: "Home", state: {mensagemDeCriacaoDaSolicitacao: resultado.mensagem}} );
+    enviarMensagemDeResposta(resultado.mensagem);
+    fecharDrawer();
     return;
   }
 
@@ -143,7 +148,7 @@ onMounted(() => {
 
   
   <div style="display: flex; margin-top: 1rem; gap: 1rem; justify-content: end; margin-right: 5rem;">
-    <Button label="Voltar" class="p-button-danger" @click="navegarParaHome" />
+    <Button label="Voltar" class="p-button-danger" @click="fecharDrawer" />
     <Button label="Salvar" @click="criarNovaSolicitacao" />
   </div>
 </template>
