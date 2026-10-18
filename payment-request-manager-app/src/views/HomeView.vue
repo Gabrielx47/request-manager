@@ -222,7 +222,7 @@ onMounted(() => {
     position="right"
     :style="{ width: '60vw', maxWidth: '700px' }"
   >
-    <FormSolicitacao  @closeFormDrawer="(trueOrFalse) => isVisibleCadastroDaSolicitacao = trueOrFalse"  @responseMessage="showResponseMessage" />
+    <FormSolicitacao  @close-form-drawer="(trueOrFalse) => isVisibleCadastroDaSolicitacao = trueOrFalse"  @response-message="showResponseMessage" />
   </Drawer>
   
 </template>
