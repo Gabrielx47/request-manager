@@ -100,7 +100,7 @@ onMounted(() => {
     <div class="fields">
       <div style="width: 100%;" >
         <label for="cpfCnpj">CPF/CNPJ</label>
-        <Select id="cpfCnpj" style="width: 100%;" placeholder="CPF/CNPJ" :options="solicitantes" option-label="cpfCnpj" option-value="id" v-model="novaSolicitacao.solicitante_id" @change="erros.solicitante_id = ''">
+        <Select id="cpfCnpj" style="width: 100%;" placeholder="Selecione" :options="solicitantes" option-label="cpfCnpj" option-value="id" v-model="novaSolicitacao.solicitante_id" @change="erros.solicitante_id = ''">
         <template #option="slotProps">
           <div>
             {{ slotProps.option.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') }}
@@ -120,13 +120,13 @@ onMounted(() => {
     <div class="fields">
       <div style="width: 100%;">
         <label for="status">Status</label>
-        <Select id="status" style="width: 100%;" placeholder="Status" :options="['SOLICITADO']" v-model="novaSolicitacao.status" />
+        <Select id="status" style="width: 100%;" placeholder="Selecione" :options="['SOLICITADO']" v-model="novaSolicitacao.status" />
         <Message v-if="erros.status" severity="error" size="small" variant="simple" :life="10000" >{{erros.status}}</Message>
       </div>
       
       <div style="width: 100%;">
         <label for="categoria">Categoria</label>
-        <Select id="categoria" style="width: 100%;" placeholder="Categoria" :options="categorias" option-label="nome" option-value="id" v-model="novaSolicitacao.categoria_id" />
+        <Select id="categoria" style="width: 100%;" placeholder="Selecione" :options="categorias" option-label="nome" option-value="id" v-model="novaSolicitacao.categoria_id" />
         <Message v-if="erros.categoria_id" severity="error" size="small" variant="simple" :life="10000" >{{erros.categoria_id}}</Message>
       </div>
     </div>
@@ -134,18 +134,17 @@ onMounted(() => {
     <div class="fields">
       <div style="width: 100%;">
         <label for="descricao">Descrição</label>
-        <InputText id="descricao" style="width: 100%;" placeholder="Descrição" v-model="novaSolicitacao.descricao" />
+        <InputText id="descricao" style="width: 100%;" placeholder="Descreva" v-model="novaSolicitacao.descricao" />
         <Message v-if="erros.descricao" severity="error" size="small" variant="simple" :life="10000">{{erros.descricao}}</Message>
       </div>
 
       <div style="width: 100%;">
         <label for="valor">Valor</label>
-        <InputNumber id="valor" style="width: 100%;" placeholder="Valor R$" v-model="novaSolicitacao.valor" />
+        <InputNumber id="valor" style="width: 100%;" mode="currency" currency="BRL" placeholder="R$" v-model="novaSolicitacao.valor" />
         <Message v-if="erros.valor" severity="error" size="small" variant="simple" :life="10000">{{erros.valor}}</Message>
       </div>
     </div>
   </div>
-
   
   <div style="display: flex; margin-top: 1rem; gap: 1rem; justify-content: end; margin-right: 5rem;">
     <Button label="Voltar" class="p-button-danger" @click="fecharDrawer" />
