@@ -112,7 +112,7 @@ onMounted(() => {
       
       <div style="width: 100%;">
         <label for="dataDaSolicitacao">Data</label>
-        <DatePicker id="dataDaSolicitacao" style="width: 100%;" v-model="novaSolicitacao.dataDaSolicitacao" placeholder="Data" showIcon dateFormat="yy-mm-dd"/>
+        <DatePicker id="dataDaSolicitacao" style="width: 100%;" v-model="novaSolicitacao.dataDaSolicitacao" placeholder="AAAA-MM-DD" showIcon dateFormat="yy-mm-dd"/>
         <Message v-if="erros.dataSolicitacao" severity="error" size="small" variant="simple" :life="10000" >{{erros.dataSolicitacao}}</Message>
       </div>
     </div>
