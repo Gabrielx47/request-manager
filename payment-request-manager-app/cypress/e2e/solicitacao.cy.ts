@@ -17,6 +17,17 @@ describe('Testando as Funcionalidades de Solicitação de Pagamento', () => {
     cy.visit('/');
   });
 
+  it('Deve exibir as colunas da tabela de solicitações', () => {
+    cy.get('thead th').should(($headers) => {
+      expect($headers).to.have.length(6);
+      expect(
+        [...$headers]
+          .map((header) => header.innerText.trim())
+          .filter(Boolean),
+      ).to.deep.equal(['Nome', 'CPF/CNPJ', 'Categoria', 'Status', 'Valor']);
+    });
+  });
+
   it('Deve criar uma nova solicitação', () => {
     cy.contains('button', 'Criar').click();
 
