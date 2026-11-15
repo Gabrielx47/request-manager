@@ -1,17 +1,17 @@
 describe('Testando as Funcionalidades de Solicitação de Pagamento', () => {
   beforeEach(() => {
     cy.intercept('GET', 'http://localhost:5000/solicitacoes*', {
-      body: { content: [], page: { totalElements: 0 } },
+      fixture: 'solicitacao-pagamento/solicitacoes.json',
     });
     cy.intercept('GET', 'http://localhost:5000/categorias', {
-      body: [{ id: 1, nome: 'Operacional' }],
+      fixture: 'solicitacao-pagamento/categorias.json',
     });
     cy.intercept('GET', 'http://localhost:5000/solicitantes', {
-      body: [{ id: 1, cpfCnpj: '12345678909', nome: 'Pessoa de Teste' }],
+      fixture: 'solicitacao-pagamento/solicitantes.json',
     });
     cy.intercept('POST', 'http://localhost:5000/solicitacoes', {
       statusCode: 201,
-      body: 'Solicitação criada com sucesso',
+      fixture: 'solicitacao-pagamento/solicitacao-criada.json',
     }).as('criarSolicitacao');
 
     cy.visit('/');
