@@ -1,0 +1,26 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "nomeDoSolicitante": "Pessoa de Teste",
+      "cpfCnpj": "123.456.789-09",
+      "nomeDaCategoria": "Operacional",
+      "status": "SOLICITADO",
+      "valor": 1250.5
+    },
+    {
+      "id": 2,
+      "nomeDoSolicitante": "Maria da Silva",
+      "cpfCnpj": "987.654.321-00",
+      "nomeDaCategoria": "Financeiro",
+      "status": "PAGO",
+      "valor": 3500.75
+    }
+  ],
+  "page": {
+    "totalElements": 2,
+    "totalPages": 1,
+    "size": 10,
+    "number": 0
+  }
+}

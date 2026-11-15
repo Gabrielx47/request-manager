@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "cpfCnpj": "12345678909",
+    "nome": "Pessoa de Teste"
+  },
+  {
+    "id": 2,
+    "cpfCnpj": "98765432100",
+    "nome": "Maria da Silva"
+  },
+  {
+    "id": 3,
+    "cpfCnpj": "11222333444455",
+    "nome": "Empresa LTDA"
+  }
+]
