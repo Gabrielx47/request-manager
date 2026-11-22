@@ -1,0 +1,9 @@
+{
+    "descricao": "Compra de um novo laptop",
+    "valor": 3500.00,
+    "dataSolicitacao": "2024-06-01",
+    "status": "SOLICITADO",
+    "nomeDaCategoria": "Eletrônicos",
+    "nomeDoSolicitante": "João da Silva",
+    "cpfCnpj": "12345678900"
+}

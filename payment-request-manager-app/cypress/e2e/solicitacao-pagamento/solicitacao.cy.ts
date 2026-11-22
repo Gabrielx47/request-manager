@@ -2,10 +2,13 @@ describe('Testando as Funcionalidades de Solicitação de Pagamento', () => {
   beforeEach(() => {
     cy.intercept('GET', 'http://localhost:5000/solicitacoes*', {
       fixture: 'solicitacao-pagamento/solicitacoes.json',
-    });
+    }).as('listarSolicitacoes') ;
+    cy.intercept('GET', 'http://localhost:5000/solicitacoes/*', {
+      fixture: 'solicitacao-pagamento/solicitacao-1-detalhes.json',
+    }).as('detalharSolicitacao');
     cy.intercept('GET', 'http://localhost:5000/categorias', {
       fixture: 'solicitacao-pagamento/categorias.json',
-    });
+    }).as('listarCategorias');
     cy.intercept('GET', 'http://localhost:5000/solicitantes', {
       fixture: 'solicitacao-pagamento/solicitantes.json',
     });
@@ -55,5 +58,27 @@ describe('Testando as Funcionalidades de Solicitação de Pagamento', () => {
       solicitante_id: 1,
     });
     cy.contains('Solicitação criada com sucesso').should('be.visible');
+  });
+
+  it('Deve verificar os detalhes de uma solicitação', () => {
+    cy.wait('@listarSolicitacoes');
+    cy.wait('@listarCategorias');
+
+    cy.contains('button', 'Detalhes').click({ force: true });
+    cy.wait('@detalharSolicitacao');
+
+    cy.fixture('solicitacao-pagamento/solicitacao-1-detalhes.json').then((solicitacao) => {
+      const dataSolicitacao = new Date(solicitacao.dataSolicitacao).toLocaleDateString('pt-BR');
+
+      cy.get('.details-dialog').should('be.visible').within(() => {
+        cy.contains('p', `Solicitante: ${solicitacao.nomeDoSolicitante}`).should('be.visible');
+        cy.contains('p', `CPF/CNPJ: ${solicitacao.cpfCnpj}`).should('be.visible');
+        cy.contains('p', `Data da Solicitação: ${dataSolicitacao}`).should('be.visible');
+        cy.contains('p', `Status: ${solicitacao.status}`).should('be.visible');
+        cy.contains('p', `Categoria: ${solicitacao.nomeDaCategoria}`).should('be.visible');
+        cy.contains('p', `Valor: R$ ${solicitacao.valor.toFixed(2)}`).should('be.visible');
+        cy.contains('p', `Descrição: ${solicitacao.descricao}`).should('be.visible');
+      });
+    });
   });
 });
