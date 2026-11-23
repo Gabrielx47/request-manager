@@ -160,33 +160,33 @@ onMounted(() => {
       <div class="table-header">
         <h2>Solicitações de Pagamento</h2>
         <div style="display: flex; gap: 1rem;">
-          <Button label="Filtrar"  @click="isVisibleFilterDialog = true" icon="pi pi-filter" iconPos="right"/>
+          <Button data-cy="filtrar-solicitacoes" label="Filtrar"  @click="isVisibleFilterDialog = true" icon="pi pi-filter" iconPos="right"/>
             <!-- <RouterLink to="/solicitacoes" > -->
-              <Button label="Criar" icon="pi pi-plus-circle" iconPos="right" @click="isVisibleCadastroDaSolicitacao = true"></Button>
+              <Button data-cy="criar-solicitacao" label="Criar" icon="pi pi-plus-circle" iconPos="right" @click="isVisibleCadastroDaSolicitacao = true"></Button>
             <!-- </RouterLink> -->
         </div>
       </div>
     </template>
 
-    <Column field="nomeDoSolicitante" header="Nome"></Column>
-    <Column field="cpfCnpj" header="CPF/CNPJ">
+    <Column data-cy="nome-{{data.id}}" field="nomeDoSolicitante" header="Nome"></Column>
+    <Column data-cy="cpfCnpj-{{data.id}}" field="cpfCnpj" header="CPF/CNPJ">
       <template #body="slotProps">
         {{ slotProps.data.cpfCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') }}
       </template>
     </Column>
-    <Column field="nomeDaCategoria" header="Categoria"></Column>  
-    <Column field="status" header="Status">
+    <Column data-cy="categoria-{{data.id}}" field="nomeDaCategoria" header="Categoria"></Column>  
+    <Column data-cy="status-{{data.id}}" field="status" header="Status">
       <template #body="{data}">
         <Select :options="['SOLICITADO', 'LIBERADO', 'APROVADO', 'REJEITADO', 'CANCELADO']" v-model="data.status" @change="atualizarStatusDaSolicitacao(data.id, data.status)" />
       </template>
     </Column>
-    <Column field="valor" header="Valor">
+    <Column data-cy="valor-{{data.id}}" field="valor" header="Valor">
       <template #body="slotProps">
         R$ {{slotProps.data.valor.toFixed(2)}}
       </template>
     </Column>
-    <Column #body="{data}">
-      <Button  label="Detalhes" class="p-button-info" icon="pi pi-info-circle" iconPos="right" @click="carregarDetalhesDaSolicitacao(data.id)"/>
+    <Column data-cy="detalhes-{{data.id}}" #body="{data}">
+      <Button data-cy="detalhes-button-{{data.id}}"  label="Detalhes" class="p-button-info" icon="pi pi-info-circle" iconPos="right" @click="carregarDetalhesDaSolicitacao(data.id)"/>
     </Column>  
   </DataTable>
 
@@ -198,20 +198,20 @@ onMounted(() => {
   <Dialog v-model:visible="isVisibleFilterDialog" header="Filtrar Solicitações" modal>
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <span><strong>Status</strong></span>
-      <Select v-model="filtro.status" placeholder="Status" :options="['SOLICITADO', 'LIBERADO', 'APROVADO', 'REJEITADO', 'CANCELADO']" />
+      <Select data-cy="status-filtro" v-model="filtro.status" placeholder="Status" :options="['SOLICITADO', 'LIBERADO', 'APROVADO', 'REJEITADO', 'CANCELADO']" />
 
       <span><strong>Período</strong></span>
       <div style="display: flex; gap: 1rem;">
-        <DatePicker v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon />
-        <DatePicker v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
+        <DatePicker data-cy="data-inicial" v-model="filtro.dataInicial" placeholder="Data de Inicial" showIcon />
+        <DatePicker data-cy="data-final" v-model="filtro.dataFinal" placeholder="Data de Final" showIcon />
       </div>
       <Message v-if="isError" severity="error" size="small" variant="simple" :life="10000">{{erro}}</Message>
 
       <span><strong>Categoria</strong></span>
-      <Select v-model="filtro.categoria" placeholder="Categoria" :options="categorias" option-label="nome" option-value="nome" />
+      <Select data-cy="categoria-filtro" v-model="filtro.categoria" placeholder="Categoria" :options="categorias" option-label="nome" option-value="nome" />
       <div style="display: flex; gap: 1rem; align-self: center;" >
-        <Button label="Limpar" icon="pi pi-filter-slash" iconPos="right" @click="limparFiltros" class="p-button-danger" />
-        <Button label="Aplicar" icon="pi pi-filter-fill" iconPos="right" @click="aplicarFiltros" />
+        <Button data-cy="limpar-filtros" label="Limpar" icon="pi pi-filter-slash" iconPos="right" @click="limparFiltros" class="p-button-danger" />
+        <Button data-cy="aplicar-filtros" label="Aplicar" icon="pi pi-filter-fill" iconPos="right" @click="aplicarFiltros" />
       </div>
     </div>
   </Dialog>
